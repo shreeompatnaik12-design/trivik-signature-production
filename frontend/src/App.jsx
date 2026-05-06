@@ -74,6 +74,69 @@ function ImageTile({ title, src, tag, large = false }) {
   );
 }
 
+function LeadMagnetStrip({ compact = false }) {
+  const items = [
+    ["Price Sheet", "Get the latest unit pricing and scheme details.", "/contact"],
+    ["Floor Plans", "Download 3 BHK and duplex plan references.", "/residences"],
+    ["Site Visit", "Schedule a private walkthrough with our team.", "/contact"]
+  ];
+
+  return (
+    <section className={`lead-magnet ${compact ? "compact" : ""}`}>
+      <div className="container lead-magnet-grid">
+        {items.map(([title, copy, to]) => (
+          <Link className="lead-magnet-card" to={to} key={title}>
+            <span>{title}</span>
+            <strong>{copy}</strong>
+            <em>Request now →</em>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function CinematicGallery() {
+  const [active, setActive] = useState(null);
+  const frames = [
+    { role: "Arrival", src: assets["hero-entrance"], title: "A composed arrival that introduces the scale of the address." },
+    { role: "Masterplan", src: assets["aerial-master"], title: "Aerial planning that reveals the full 6.34-acre community." },
+    { role: "Lifestyle", src: assets["clubhouse-pool"], title: "Clubhouse, pool and leisure zones forming the social heart." },
+    { role: "Architecture", src: assets["front-view"], title: "A clean architectural language with calm residential presence." },
+    { role: "Landscape", src: assets["landscape-view"], title: "Open green pockets designed for daily pause and family life." }
+  ];
+
+  return (
+    <section className="block pearl cinematic-block">
+      <div className="container">
+        <div className="cinematic-heading">
+          <div>
+            <SectionLabel>Visual Journey</SectionLabel>
+            <h2 className="section-title display">From first arrival to everyday life.</h2>
+          </div>
+          <p className="copy-lg">Each render now has a role: arrival, scale, lifestyle, architecture and landscape. Click any frame to view it larger.</p>
+        </div>
+        <div className="cinematic-gallery">
+          {frames.map((item, index) => (
+            <button className={`cinematic-frame frame-${index + 1}`} key={item.role} onClick={() => setActive(item)}>
+              <img src={item.src} alt={item.title} loading="lazy" />
+              <span>{item.role}</span>
+              <strong className="display">{item.title}</strong>
+            </button>
+          ))}
+        </div>
+      </div>
+      {active && (
+        <div className="lightbox" onClick={() => setActive(null)}>
+          <button aria-label="Close image" className="lightbox-close">×</button>
+          <img src={active.src} alt={active.title} />
+          <div><span>{active.role}</span><strong className="display">{active.title}</strong></div>
+        </div>
+      )}
+    </section>
+  );
+}
+
 function Home() {
   return (
     <>
@@ -86,8 +149,8 @@ function Home() {
             <h1 className="display">The Art of <em>Elevated</em> Living</h1>
             <p className="lead">Welcome to Trivik Signature — where modern architecture meets an elevated way of life. A community of 408 premium residences across 3 stunning towers, designed for those who refuse to compromise on quality, comfort or aesthetics.</p>
             <div className="hero-actions">
-              <Button to="/contact" variant="gold">Request Brochure & Price Sheet</Button>
-              <Button to="/residences" variant="outline">Explore Residences</Button>
+              <Button to="/contact" variant="gold">Get Current Price Sheet</Button>
+              <Button to="/residences" variant="outline">Download Floor Plans</Button>
             </div>
           </div>
           <aside className="snapshot">
@@ -104,6 +167,8 @@ function Home() {
           </aside>
         </div>
       </section>
+
+      <LeadMagnetStrip />
 
       <section className="block pearl">
         <div className="container split">
@@ -131,15 +196,7 @@ function Home() {
         </div>
       </section>
 
-      <section className="block pearl">
-        <div className="container gallery-main">
-          <ImageTile large src={assets["aerial-master"]} tag="Aerial Master View" title="A complete 6.34-acre community planned around arrival, landscape and leisure." />
-          <div className="gallery-stack">
-            <ImageTile src={assets["clubhouse-pool"]} tag="Clubhouse & Pool" title="A calm centre for everyday leisure." />
-            <ImageTile src={assets["entrance-gateway"]} tag="Arrival" title="A composed first approach." />
-          </div>
-        </div>
-      </section>
+      <CinematicGallery />
 
       <PreviewSection
         image={assets["front-view"]}
@@ -281,6 +338,8 @@ function Residences() {
           </div>
         </div>
       </section>
+      <LeadMagnetStrip compact />
+
       <section className="block white">
         <div className="container">
           <SectionLabel>Official Plan Reference</SectionLabel>
@@ -306,7 +365,7 @@ function Residences() {
               <h2 className="display floor-title">{home.title}</h2>
               <p className="lead">{home.copy}</p>
               <ul>{home.points.map(p => <li key={p}>◇ {p}</li>)}</ul>
-              <Button to="/contact" variant="gold">Request Official Plan</Button>
+              <Button to="/contact" variant="gold">Download Full Floor Plan</Button>
             </div>
           </div>
         </div>
@@ -357,7 +416,7 @@ function Contact() {
   };
   return (
     <>
-      <PageHero eyebrow="Private Preview" title="Receive the brochure, floor plans and" italic="availability details" copy="A direct enquiry journey connected to WhatsApp for immediate follow-up." image={assets["entrance-gateway"]} />
+      <PageHero eyebrow="Private Preview" title="Receive the brochure, floor plans and" italic="availability details" copy="Choose what you need — current price sheet, floor plan, duplex availability or a private site visit — and our team will follow up directly." image={assets["entrance-gateway"]} />
       <section className="block pearl">
         <div className="container split">
           <div>
@@ -369,9 +428,9 @@ function Contact() {
           <form onSubmit={submit} className="lead-form">
             <div className="form-grid"><label>Name<input required placeholder="Your name" /></label><label>Phone<input required placeholder="+91" /></label></div>
             <label>Email<input type="email" placeholder="you@example.com" /></label>
-            <label>Interested In<select><option>3 BHK Signature Apartment</option><option>Premium Duplex Home</option><option>Trivik T20 Scheme</option><option>EMI Holiday Scheme</option><option>Site Visit</option></select></label>
+            <label>Interested In<select><option>Get Current Price Sheet</option><option>Download 3 BHK Floor Plan</option><option>Check Duplex Availability</option><option>Book a Private Site Visit</option><option>Understand T20 / EMI Holiday Scheme</option></select></label>
             <label>Message<textarea rows="5" placeholder="Tell us your requirement" /></label>
-            <button className="btn dark" type="submit">Request Details</button>
+            <button className="btn dark" type="submit">Get Price Sheet & Book Site Visit</button>
           </form>
         </div>
       </section>
@@ -543,10 +602,25 @@ function Footer() {
 }
 
 function StickyCTA() {
-  return <div className="sticky-cta"><a href={project.phoneLink}>Call</a><a href={project.whatsapp}>WhatsApp</a><Link to="/contact">Brochure</Link></div>;
+  return <div className="sticky-cta"><Link to="/contact">Price Sheet</Link><Link to="/residences">Floor Plan</Link><Link to="/contact">Site Visit</Link></div>;
 }
 
 function App() {
+  useEffect(() => {
+    const nodes = document.querySelectorAll(".block, .image-tile, .info-card, .preview-image, .portal-card, .offer-card, .fact, .lead-magnet-card, .cinematic-frame");
+    nodes.forEach((node) => node.classList.add("reveal"));
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    nodes.forEach((node) => observer.observe(node));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
       <Header />
