@@ -37,7 +37,7 @@ function Icon({ name }) {
     viewBox: "0 0 24 24",
     fill: "none",
     stroke: "currentColor",
-    strokeWidth: "1.65",
+    strokeWidth: "1.75",
     strokeLinecap: "round",
     strokeLinejoin: "round"
   };
@@ -587,7 +587,7 @@ function CustomerLogin() {
       localStorage.setItem("trivikToken", data.token);
       navigate("/customer-dashboard");
     } catch (err) {
-      setError(err.message || "Could not login. Check that the backend is running.");
+      setError(err.message || "Could not login. Check that the backend URL and CORS settings are correct.");
     } finally {
       setLoading(false);
     }
