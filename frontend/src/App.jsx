@@ -138,10 +138,9 @@ function TrustBadge({ item }) {
         {item.kind === "image" ? (
           <img src={item.image} alt={item.title} />
         ) : (
-          <div className="custom-strr-badge">
+          <div className="simple-strr-mark">
             <span>STRR</span>
-            <strong>Connectivity</strong>
-            <em>Growth Corridor</em>
+            <strong>Connectivity Corridor</strong>
           </div>
         )}
       </div>
@@ -217,13 +216,13 @@ function CategoryCard({ item }) {
   );
 }
 
-function JourneyCard({ item }) {
+function JourneyCard({ item, index }) {
   return (
-    <div className={`journey-card ${item.status}`}>
-      <span className="journey-step">Step</span>
+    <div className={`timeline-item ${item.status}`}>
+      <div className="timeline-node">{item.status === "active" ? "✓" : index + 1}</div>
+      <span className="timeline-status">{item.stage}</span>
       <h3>{item.title}</h3>
       <p>{item.text}</p>
-      {item.status === "active" ? <strong>Now active</strong> : <em>Upcoming</em>}
     </div>
   );
 }
@@ -387,15 +386,15 @@ function Home() {
         </div>
       </section>
 
-      <section className="block white">
-        <div className="container journey-wrap">
-          <div>
-            <SectionLabel>Journey</SectionLabel>
-            <h2 className="section-title display">Follow the journey from vision to reality.</h2>
-            <p className="copy-lg">As requested, the first milestone remains sharp and visible, while later stages are intentionally softened to create a forward-looking journey section.</p>
+      <section className="timeline-section">
+        <div className="container">
+          <div className="timeline-heading">
+            <SectionLabel light>Project Milestones</SectionLabel>
+            <h2 className="section-title display">Project <em>Timeline</em></h2>
+            <p>Only the RERA milestone is active right now. The next milestones stay softly blurred until the project advances.</p>
           </div>
-          <div className="journey-grid reveal">
-            {journeySteps.map((item) => <JourneyCard key={item.title} item={item} />)}
+          <div className="timeline-grid reveal">
+            {journeySteps.map((item, index) => <JourneyCard key={item.title} item={item} index={index} />)}
           </div>
         </div>
       </section>
