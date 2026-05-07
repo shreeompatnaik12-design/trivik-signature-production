@@ -83,18 +83,22 @@ export const visualShowcase = [
 
 export const whyUs = [
   {
+    icon: "shield",
     title: "Trust-led development",
     text: "RERA registered planning, transparent communication and clear customer-facing documentation."
   },
   {
+    icon: "location",
     title: "East Bengaluru address",
     text: "A growing residential corridor with access to Whitefield, Soukya Road and surrounding employment zones."
   },
   {
+    icon: "design",
     title: "Thoughtful planning",
     text: "Spacious homes, practical circulation, natural light and amenities planned around everyday use."
   },
   {
+    icon: "leaf",
     title: "Lifestyle depth",
     text: "Clubhouse, landscaped courts, sport zones and family spaces that extend life beyond the apartment."
   }
