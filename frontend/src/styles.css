@@ -255,8 +255,7 @@ button { cursor:pointer; }
 .subtle-card p { margin:10px 0 0; color:var(--muted); line-height:1.7; }
 
 .why-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; margin-top:28px; }
-.why-card { padding:24px; transition:transform .22s ease, border-color .22s ease, box-shadow .22s ease; }
-.why-card:hover { transform:translateY(-3px); border-color:rgba(207,168,86,.32); box-shadow:0 18px 46px rgba(15,53,105,.12); }
+.why-card { padding:24px; }
 .why-icon {
   width:52px;
   height:52px;
@@ -268,8 +267,11 @@ button { cursor:pointer; }
   margin-bottom:16px;
 }
 .why-icon svg {
-  width:24px;
-  height:24px;
+  width:25px;
+  height:25px;
+  display:block;
+  color:var(--navy);
+  stroke:currentColor;
 }
 .why-card h3 { margin:0; font-size:18px; }
 .why-card p { margin:12px 0 0; color:var(--muted); font-size:14px; line-height:1.75; }
@@ -636,3 +638,64 @@ th { color:var(--gold); text-transform:uppercase; letter-spacing:.16em; font-siz
   .floating-rail { left:12px; bottom:82px; }
   .floating-rail a { width:42px; height:42px; font-size:12px; }
 }
+
+
+/* Mobile overflow safety */
+html, body, #root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+body {
+  position: relative;
+}
+.site-header,
+.hero,
+.page-hero,
+.block,
+.site-footer {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+.container {
+  max-width: calc(100vw - 36px);
+}
+@media (max-width: 700px) {
+  .container {
+    width: calc(100% - 28px);
+    max-width: calc(100vw - 28px);
+  }
+  .hero h1 {
+    font-size: clamp(40px, 13vw, 50px);
+    line-height: .92;
+    overflow-wrap: anywhere;
+  }
+  .section-title {
+    font-size: clamp(32px, 10vw, 40px);
+    line-height: 1;
+    overflow-wrap: anywhere;
+  }
+  .page-hero h1 {
+    font-size: clamp(36px, 10.5vw, 44px);
+  }
+  .snapshot,
+  .lead-form,
+  .login-card,
+  .portal-card,
+  .contact-card,
+  .rera-card,
+  .subtle-card {
+    width: 100%;
+    max-width: 100%;
+  }
+  .sticky-cta {
+    width: calc(100vw - 20px);
+    left: 10px;
+    right: 10px;
+    transform: none;
+  }
+  .floating-rail {
+    left: 10px;
+  }
+}
+
