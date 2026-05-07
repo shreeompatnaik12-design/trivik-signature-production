@@ -31,6 +31,31 @@ function SectionLabel({ children, light = false }) {
   return <div className={`section-label ${light ? "light" : ""}`}>{children}</div>;
 }
 
+
+function Icon({ name }) {
+  const common = {
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "1.65",
+    strokeLinecap: "round",
+    strokeLinejoin: "round"
+  };
+
+  switch (name) {
+    case "shield":
+      return <svg {...common}><path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-3z" /><path d="M9.5 12l1.7 1.7L14.8 10" /></svg>;
+    case "location":
+      return <svg {...common}><path d="M12 21s6-5.2 6-11a6 6 0 1 0-12 0c0 5.8 6 11 6 11z" /><circle cx="12" cy="10" r="2.5" /></svg>;
+    case "design":
+      return <svg {...common}><path d="M4 15l8-11 8 11" /><path d="M6 13h12" /><path d="M8 19h8" /></svg>;
+    case "leaf":
+      return <svg {...common}><path d="M5 14c0-6 7-9 14-9 0 7-3 14-9 14-3 0-5-2-5-5z" /><path d="M7 17c2-3 6-6 10-8" /></svg>;
+    default:
+      return <svg {...common}><circle cx="12" cy="12" r="9" /></svg>;
+  }
+}
+
 function Button({ children, to, href, variant = "gold", onClick, type = "button", className = "" }) {
   const cls = `btn ${variant} ${className}`.trim();
   if (href) return <a className={cls} href={href} onClick={onClick}>{children}</a>;
@@ -112,7 +137,7 @@ function VisualCard({ title, tag, image }) {
 function WhyCard({ item }) {
   return (
     <div className="why-card reveal">
-      <span className="why-mark">◇</span>
+      <div className="why-icon"><Icon name={item.icon || "shield"} /></div>
       <h3>{item.title}</h3>
       <p>{item.text}</p>
     </div>
