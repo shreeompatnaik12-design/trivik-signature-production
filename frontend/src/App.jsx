@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, NavLink, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import {
-  amenityCategories,
+  amenityGroups,
   amenityHighlights,
-  approvals,
   assets,
-  journeySteps,
+  facts,
+  milestones,
   offerSchemes,
   partners,
   project,
@@ -31,47 +31,11 @@ function SectionLabel({ children, light = false }) {
   return <div className={`section-label ${light ? "light" : ""}`}>{children}</div>;
 }
 
-function Icon({ name }) {
-  const common = { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.7", strokeLinecap: "round", strokeLinejoin: "round" };
-  switch (name) {
-    case "shield":
-      return <svg {...common}><path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-3z" /><path d="M9.5 12l1.7 1.7L14.8 10" /></svg>;
-    case "location":
-      return <svg {...common}><path d="M12 21s6-5.2 6-11a6 6 0 1 0-12 0c0 5.8 6 11 6 11z" /><circle cx="12" cy="10" r="2.5" /></svg>;
-    case "design":
-      return <svg {...common}><path d="M4 15l8-11 8 11" /><path d="M6 13h12" /><path d="M8 19h8" /></svg>;
-    case "leaf":
-      return <svg {...common}><path d="M5 14c0-6 7-9 14-9 0 7-3 14-9 14-3 0-5-2-5-5z" /><path d="M7 17c2-3 6-6 10-8" /></svg>;
-    case "star":
-      return <svg {...common}><path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.5 6.5 20.2l1-6.2L3 9.6l6.2-.9L12 3z" /></svg>;
-    case "heart":
-      return <svg {...common}><path d="M20 7.2a4.7 4.7 0 0 0-8-3.2A4.7 4.7 0 0 0 4 7.2c0 6.2 8 11.8 8 11.8s8-5.6 8-11.8z" /></svg>;
-    case "sport":
-      return <svg {...common}><path d="M5 19l14-14" /><path d="M8 5c2 2 2 5 0 7" /><path d="M19 16c-2-2-5-2-7 0" /><circle cx="7" cy="17" r="2" /><circle cx="17" cy="7" r="2" /></svg>;
-    case "lock":
-      return <svg {...common}><rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V8a4 4 0 1 1 8 0v3" /></svg>;
-    case "phone":
-      return <svg {...common}><path d="M8 4h3l1 4-2 1.5a16 16 0 0 0 4 4L15.5 12l4 1v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 6 6.7 2 2 0 0 1 8 4z" /></svg>;
-    case "whatsapp":
-      return <svg {...common}><path d="M20 11.5a8 8 0 1 0-15 4l-1 4 4-1a8 8 0 0 0 12-7z" /><path d="M9 9.5c.2 2 2.5 4.3 4.5 4.5" /><path d="M14.2 14.2c-.7.4-2.1-.1-3.4-1.4-1.3-1.3-1.8-2.7-1.4-3.4" /></svg>;
-    case "user":
-      return <svg {...common}><circle cx="12" cy="8" r="3.5" /><path d="M5 20a7 7 0 0 1 14 0" /></svg>;
-    default:
-      return <svg {...common}><circle cx="12" cy="12" r="9" /></svg>;
-  }
-}
-
-function Button({ children, to, href, variant = "gold", icon, className = "", onClick, type = "button" }) {
+function Button({ children, to, href, variant = "gold", onClick, type = "button", className = "" }) {
   const cls = `btn ${variant} ${className}`.trim();
-  const body = (
-    <>
-      {icon && <span className="btn-icon"><Icon name={icon} /></span>}
-      <span>{children}</span>
-    </>
-  );
-  if (href) return <a className={cls} href={href} onClick={onClick}>{body}</a>;
-  if (to) return <Link className={cls} to={to} onClick={onClick}>{body}</Link>;
-  return <button className={cls} type={type} onClick={onClick}>{body}</button>;
+  if (href) return <a className={cls} href={href} onClick={onClick}>{children}</a>;
+  if (to) return <Link className={cls} to={to} onClick={onClick}>{children}</Link>;
+  return <button className={cls} type={type} onClick={onClick}>{children}</button>;
 }
 
 function Header() {
@@ -87,7 +51,7 @@ function Header() {
 
   return (
     <header className="site-header">
-      <div className="container nav-shell">
+      <div className="container nav">
         <Link to="/" className="brand" aria-label="Trivik Signature home">
           <img src={assets.logo} alt="Trivik Signature logo" />
         </Link>
@@ -95,11 +59,9 @@ function Header() {
           {nav.map(([label, path]) => <NavLink key={path} to={path}>{label}</NavLink>)}
         </nav>
         <div className="nav-actions">
-          <Button to="/customer-login" variant="dark" icon="lock">Customer Login</Button>
-          <button className="hamburger" aria-label="Open menu" onClick={() => setOpen(!open)}>
-            <span />
-            <span />
-            <span />
+          <Button to="/customer-login" variant="dark" className="login-link">Customer Login</Button>
+          <button className="hamburger" onClick={() => setOpen(!open)} aria-label="Open menu">
+            <span /><span /><span />
           </button>
         </div>
       </div>
@@ -117,186 +79,106 @@ function PageHero({ eyebrow, title, italic, copy, image }) {
   return (
     <section className="page-hero">
       <img src={image} alt="" loading="eager" />
-      <div className="hero-overlay dark" />
+      <div className="page-hero-overlay" />
       <div className="container page-hero-inner">
         <SectionLabel light>{eyebrow}</SectionLabel>
         <h1 className="display">{title} {italic && <em>{italic}</em>}</h1>
-        {copy && <p className="lead max-copy">{copy}</p>}
+        {copy && <p className="lead">{copy}</p>}
       </div>
     </section>
   );
 }
 
-function StatCard({ value, label }) {
-  return <div className="stat-card"><strong className="num">{value}</strong><span>{label}</span></div>;
+function Stat({ value, label }) {
+  return <div className="stat"><strong className="num">{value}</strong><span>{label}</span></div>;
 }
 
-function TrustBadge({ item }) {
-  return (
-    <div className="trust-badge-card reveal">
-      <div className="trust-badge-visual">
-        {item.kind === "image" ? (
-          <img src={item.image} alt={item.title} />
-        ) : (
-          <div className="simple-strr-mark">
-            <span>STRR</span>
-            <strong>Connectivity Corridor</strong>
-          </div>
-        )}
-      </div>
-      <div className="trust-badge-copy">
-        <small>{item.subtitle}</small>
-        <h3>{item.title}</h3>
-        <p>{item.text}</p>
-        <strong>{item.value}</strong>
-      </div>
-    </div>
-  );
+function Fact({ label, value }) {
+  return <div className="fact"><span>{label}</span><strong>{value}</strong></div>;
 }
 
-function WhyUsCard({ item }) {
-  return (
-    <div className="why-card reveal">
-      <div className="why-icon"><Icon name={item.icon} /></div>
-      <h3>{item.title}</h3>
-      <p>{item.text}</p>
-    </div>
-  );
-}
-
-function VisualCard({ item }) {
+function VisualCard({ title, tag, image }) {
   return (
     <article className="visual-card reveal">
-      <img src={item.image} alt={item.title} loading="lazy" />
-      <div className="visual-overlay">
-        <span>{item.tag}</span>
-        <h3 className="display">{item.title}</h3>
-        <p>{item.copy}</p>
+      <img src={image} alt={title} loading="lazy" />
+      <div className="visual-caption">
+        <small>{tag}</small>
+        <h3 className="display">{title}</h3>
       </div>
     </article>
   );
 }
 
-function AmenityPreviewCard({ item }) {
+function WhyCard({ item }) {
   return (
-    <article className="amenity-preview-card reveal">
-      <img src={item.image} alt={item.title} loading="lazy" />
-      <div className="amenity-preview-overlay">
-        <small>{item.category}</small>
-        <h3>{item.title}</h3>
-      </div>
-    </article>
-  );
-}
-
-function AmenityFeatureCard({ item }) {
-  return (
-    <article className="amenity-feature-card reveal">
-      <div className="amenity-feature-image">
-        <img src={item.image} alt={item.title} loading="lazy" />
-      </div>
-      <div className="amenity-feature-copy">
-        <small>{item.category}</small>
-        <h3>{item.title}</h3>
-        <p>{item.copy}</p>
-      </div>
-    </article>
-  );
-}
-
-function CategoryCard({ item }) {
-  return (
-    <div className="category-card reveal">
-      <div className="category-icon"><Icon name={item.icon} /></div>
+    <div className="why-card reveal">
+      <span className="why-mark">◇</span>
       <h3>{item.title}</h3>
-      <ul>
-        {item.items.map((entry) => <li key={entry}>{entry}</li>)}
-      </ul>
+      <p>{item.text}</p>
     </div>
   );
 }
 
-function JourneyCard({ item, index }) {
+function AmenityTile({ title, tag, image }) {
   return (
-    <div className={`timeline-item ${item.status}`}>
-      <div className="timeline-node">{item.status === "active" ? "✓" : index + 1}</div>
-      <span className="timeline-status">{item.stage}</span>
-      <h3>{item.title}</h3>
-      <p>{item.text}</p>
+    <article className="amenity-tile reveal">
+      <img src={image} alt={title} loading="lazy" />
+      <div className="amenity-caption">
+        <small>{tag}</small>
+        <h3>{title}</h3>
+      </div>
+    </article>
+  );
+}
+
+function Milestone({ item, index }) {
+  const [title, status, text, active] = item;
+  return (
+    <div className={`milestone ${active ? "active" : "blur"}`}>
+      <div className="milestone-node">{String(index + 1).padStart(2, "0")}</div>
+      <span>{status}</span>
+      <h3>{title}</h3>
+      <p>{text}</p>
     </div>
   );
 }
 
 function OfferCard({ item }) {
   return (
-    <article className={`offer-card ${item.tone} reveal`}>
-      <span className="offer-badge">{item.badge}</span>
+    <article className={`offer-card ${item.tone}`}>
+      <span>{item.badge}</span>
       <h3 className="display">{item.title}</h3>
-      <ul>
-        {item.points.map((point) => <li key={point}>{point}</li>)}
-      </ul>
-      <Button to="/contact" variant={item.tone === "navy" ? "gold" : "dark"}>Request this scheme</Button>
+      <ul>{item.points.map((point) => <li key={point}>{point}</li>)}</ul>
+      <Button to="/contact" variant={item.tone === "sand" ? "dark" : "gold"}>Request scheme details</Button>
     </article>
   );
 }
 
-function Fact({ k, v }) {
-  return <div className="fact"><span>{k}</span><strong>{v}</strong></div>;
-}
-
-function PortalCard({ children, title, dark = false, className = "" }) {
-  return <div className={`portal-card ${dark ? "dark" : ""} ${className}`}><SectionLabel light={dark}>{title}</SectionLabel>{children}</div>;
-}
-
-function PortalRows({ rows }) {
-  return <div className="portal-list">{rows.map(([a, b]) => <div className="portal-row" key={`${a}-${b}`}><span>{a}</span><strong>{b}</strong></div>)}</div>;
-}
-
-function PreviewSplit({ eyebrow, title, copy, image, to, cta, reverse = false, dark = false }) {
-  return (
-    <section className={`block ${dark ? "navy" : "white"}`}>
-      <div className={`container preview-split ${reverse ? "reverse" : ""}`}>
-        <div>
-          <SectionLabel light={dark}>{eyebrow}</SectionLabel>
-          <h2 className="section-title display">{title}</h2>
-          <p className={`copy-lg ${dark ? "light-copy" : ""}`}>{copy}</p>
-          <Button to={to} variant={dark ? "gold" : "dark"}>{cta}</Button>
-        </div>
-        <div className="preview-visual reveal">
-          <img src={image} alt={eyebrow} loading="lazy" />
-          <div className="preview-caption">{eyebrow}</div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function Home() {
-  const homeAmenities = useMemo(() => amenityHighlights.slice(0, 6), []);
-
+  const amenityPreview = useMemo(() => amenityHighlights.slice(0, 6), []);
   return (
     <>
-      <section className="hero home-hero">
-        <img className="hero-bg" src={assets.hero} alt="Trivik Signature entrance" />
+      <section className="hero">
+        <img className="hero-bg" src={assets.hero} alt="Trivik Signature entrance approach" />
         <div className="hero-overlay" />
         <div className="container hero-grid">
           <div className="hero-copy">
             <div className="eyebrow">Soukya Road · Samethanahalli · East Bengaluru</div>
-            <h1 className="display">A premium address shaped with <em>clarity, comfort and character</em>.</h1>
-            <p className="lead">Trivik Signature brings together premium residences, elegant open spaces, curated lifestyle amenities and a trust-led development approach for modern homebuyers in East Bengaluru.</p>
+            <h1 className="display">The Art of <em>Elevated</em> Living</h1>
+            <p className="lead">Welcome to Trivik Signature — where modern architecture meets an elevated way of life. A community of 408 premium residences across 3 stunning towers, designed for those who value quality, comfort and refined everyday living.</p>
             <div className="hero-actions">
-              <Button to="/contact" variant="gold">Get current price sheet</Button>
-              <Button to="/residences" variant="outline">View floor plans</Button>
+              <Button to="/contact" variant="gold">Get Current Price Sheet</Button>
+              <Button to="/residences" variant="outline">View Floor Plans</Button>
             </div>
           </div>
-          <aside className="hero-panel reveal">
-            <SectionLabel light>Project Snapshot</SectionLabel>
+          <aside className="snapshot reveal">
+            <p className="tiny-title">Project Snapshot</p>
             <h2 className="display">Trivik Signature</h2>
-            <div className="hero-stats">
-              {stats.map(([value, label]) => <StatCard key={label} value={value} label={label} />)}
+            <div className="stats">
+              {stats.map(([value, label]) => <Stat key={label} value={value} label={label} />)}
             </div>
-            <div className="hero-panel-lines">
-              <div><span>Configuration</span><strong>3 BHK residences & duplex homes</strong></div>
+            <div className="snapshot-lines">
+              <div><span>Configuration</span><strong>3 BHK apartments & duplex homes</strong></div>
               <div><span>Size range</span><strong>1,650 – 3,624 sq. ft.</strong></div>
               <div><span>RERA</span><strong>{project.rera}</strong></div>
             </div>
@@ -304,22 +186,41 @@ function Home() {
         </div>
       </section>
 
-      <section className="block white intro-band">
-        <div className="container split-intro">
+      <section className="block pearl">
+        <div className="container split">
           <div>
             <SectionLabel>Welcome to Trivik</SectionLabel>
-            <h2 className="section-title display">A signature address for families who want more from everyday living.</h2>
+            <h2 className="section-title display">This is not just a home. This is your signature address.</h2>
           </div>
-          <p className="copy-lg">At Trivik Signature, refined architecture, spacious residences, landscaped experiences and thoughtful amenities come together to create a home that feels private, practical and quietly premium.</p>
+          <div>
+            <p className="copy-lg">Every corner of Trivik Signature has been conceived with one purpose: to give you a life that is as beautiful as it is fulfilling. Thoughtfully designed living spaces, curated amenities, legal transparency and refined architecture come together in one composed residential experience.</p>
+            <Button to="/about" variant="dark">Know the Brand</Button>
+          </div>
         </div>
       </section>
 
-      <section className="block pearl">
+      <section className="block white">
         <div className="container">
-          <SectionLabel>Trust & Approvals</SectionLabel>
-          <h2 className="section-title display">A homebuying journey built on clarity and confidence.</h2>
-          <div className="trust-badge-grid">
-            {approvals.map((item) => <TrustBadge key={item.title} item={item} />)}
+          <SectionLabel>Trust & Compliance</SectionLabel>
+          <div className="trust-layout">
+            <div>
+              <h2 className="section-title display">Confidence before commitment.</h2>
+              <p className="copy-lg">Clear approvals, transparent documentation and direct buyer communication form the foundation of the Trivik Signature experience.</p>
+            </div>
+            <div className="trust-cards">
+              <div className="rera-card reveal">
+                <img src={assets.reraLogo} alt="RERA Approved" />
+                <div>
+                  <small>RERA Approved</small>
+                  <strong>{project.rera}</strong>
+                </div>
+              </div>
+              <div className="subtle-card reveal">
+                <small>Connectivity Advantage</small>
+                <strong>East Bengaluru growth corridor</strong>
+                <p>Positioned around Soukya Road, Samethanahalli and the Whitefield growth belt.</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -329,126 +230,136 @@ function Home() {
           <SectionLabel light>Why Trivik</SectionLabel>
           <h2 className="section-title display">Designed for comfort, confidence and long-term value.</h2>
           <div className="why-grid">
-            {whyUs.map((item) => <WhyUsCard key={item.title} item={item} />)}
+            {whyUs.map((item) => <WhyCard key={item.title} item={item} />)}
+          </div>
+        </div>
+      </section>
+
+      <section className="block pearl">
+        <div className="container">
+          <div className="section-head">
+            <div>
+              <SectionLabel>Visual Showcase</SectionLabel>
+              <h2 className="section-title display">A closer look at the spaces that define the community.</h2>
+            </div>
+            <p className="copy-lg">From arrival to architecture, each frame offers a quieter view of the lifestyle and scale of Trivik Signature.</p>
+          </div>
+          <div className="visual-grid">
+            {visualShowcase.map(([title, tag, image]) => <VisualCard key={title} title={title} tag={tag} image={image} />)}
+          </div>
+        </div>
+      </section>
+
+      <PreviewSection
+        eyebrow="Residences"
+        title="Spacious 3 BHK homes and limited duplex residences."
+        copy="Explore residences ranging from 1,650 to 3,624 sq. ft., with smart space planning, natural light, cross ventilation, private balconies and a clear distinction between apartment and duplex living."
+        image={assets.floorPlans}
+        to="/residences"
+        cta="Explore Residences"
+        reverse
+      />
+
+      <section className="block pearl">
+        <div className="container">
+          <div className="section-head">
+            <div>
+              <SectionLabel>Amenities</SectionLabel>
+              <h2 className="section-title display">Lifestyle spaces planned with purpose.</h2>
+            </div>
+            <p className="copy-lg">A curated mix of social, wellness, family and sports amenities gives residents more reasons to spend time within the community.</p>
+          </div>
+          <div className="amenity-preview-grid">
+            {amenityPreview.map(([title, tag, image]) => <AmenityTile key={title} title={title} tag={tag} image={image} />)}
+          </div>
+          <div className="center-cta">
+            <Button to="/amenities" variant="dark">View Amenities</Button>
           </div>
         </div>
       </section>
 
       <section className="block white">
         <div className="container">
-          <div className="section-head split-head">
-            <div>
-              <SectionLabel>Visual Showcase</SectionLabel>
-              <h2 className="section-title display">A closer look at the spaces that define the community.</h2>
-            </div>
-            <p className="copy-lg">From the arrival gateway to the master aerial view, every visual captures a different layer of the Trivik Signature lifestyle.</p>
+          <SectionLabel>Project Milestones</SectionLabel>
+          <div className="section-head">
+            <h2 className="section-title display">Follow the journey from vision to reality.</h2>
+            <p className="copy-lg">RERA approval is the current confirmed milestone. The remaining stages stay softened until each step is officially achieved.</p>
           </div>
-          <div className="visual-grid">
-            {visualShowcase.map((item) => <VisualCard key={item.title} item={item} />)}
+          <div className="milestone-line reveal">
+            {milestones.map((item, index) => <Milestone key={item[0]} item={item} index={index} />)}
           </div>
         </div>
       </section>
 
-      <PreviewSplit
-        eyebrow="About Us"
-        title="Built on integrity, innovation and a premium development outlook."
-        copy="Founded with a commitment to transparent development and better urban living, Trivik Signature brings together strong planning, legal clarity and a customer-first approach."
-        image={assets.front}
-        to="/about"
-        cta="Read about us"
-      />
-
-      <PreviewSplit
-        eyebrow="Residences"
-        title="Spacious residences crafted around light, comfort and privacy."
-        copy="Explore well-planned 3 BHK homes and limited duplex residences with generous spaces, private balconies, natural ventilation and layouts made for modern family life."
-        image={assets.floorPlans}
-        to="/residences"
-        cta="Explore residences"
-        reverse
-      />
-
-      <section className="block pearl">
-        <div className="container">
-          <div className="section-head split-head">
-            <div>
-              <SectionLabel>Amenities</SectionLabel>
-              <h2 className="section-title display">Amenities designed for leisure, wellness and community.</h2>
-            </div>
-            <p className="copy-lg">Clubhouse moments, landscaped courts, active sports zones and family-friendly spaces shape a lifestyle that feels complete beyond the apartment.</p>
-          </div>
-          <div className="amenity-preview-grid">
-            {homeAmenities.map((item) => <AmenityPreviewCard key={item.title} item={item} />)}
-          </div>
-          <div className="amenity-preview-cta">
-            <Button to="/amenities" variant="dark">View full amenities gallery</Button>
-          </div>
-        </div>
-      </section>
-
-      <section className="timeline-section">
-        <div className="container">
-          <div className="timeline-heading">
-            <SectionLabel light>Project Milestones</SectionLabel>
-            <h2 className="section-title display">From <em>vision</em> to reality</h2>
-            <p>RERA approval is the current confirmed milestone. The upcoming stages remain soft until each milestone is officially achieved.</p>
-          </div>
-          <div className="timeline-grid reveal">
-            {journeySteps.map((item, index) => <JourneyCard key={item.title} item={item} index={index} />)}
-          </div>
-        </div>
-      </section>
-
-      <section className="block navy offer-highlight-block">
-        <div className="container offer-highlight-layout">
-          <div className="offer-highlight-image reveal">
-            <img src={assets.entrance} alt="Trivik Signature offer section" loading="lazy" />
+      <section className="block navy offer-home">
+        <div className="container split align-center">
+          <div className="offer-image reveal">
+            <img src={assets.entrance} alt="Trivik Signature arrival" loading="lazy" />
           </div>
           <div>
             <SectionLabel light>Flexible Schemes</SectionLabel>
-            <h2 className="section-title display">Flexible schemes designed to make ownership easier.</h2>
-            <p className="copy-lg light-copy">Choose from thoughtfully structured payment options created to give buyers more breathing room while securing a premium home at Trivik Signature.</p>
-            <div className="offer-grid">
+            <h2 className="section-title display">Structured ownership options for premium living.</h2>
+            <p className="copy-lg light-copy">Choose from payment schemes designed to give buyers more breathing room while securing a premium residence at Trivik Signature.</p>
+            <div className="offer-grid small">
               {offerSchemes.map((item) => <OfferCard key={item.badge} item={item} />)}
             </div>
           </div>
         </div>
       </section>
 
-      <PreviewSplit
+      <PreviewSection
         eyebrow="Customer Portal"
         title="A private customer space for flat details, payments and progress."
-        copy="The customer portal is designed to give buyers a clear view of their apartment details, construction updates, payment summary, documents and CRM support."
+        copy="The customer portal gives buyers a clear view of apartment details, construction updates, payment summary, documents and CRM support."
         image={assets.aerial}
         to="/customer-login"
-        cta="Open customer portal"
+        cta="Open Customer Portal"
         dark
       />
     </>
   );
 }
 
+function PreviewSection({ eyebrow, title, copy, image, to, cta, reverse = false, dark = false }) {
+  return (
+    <section className={`block ${dark ? "navy" : "white"}`}>
+      <div className={`container split align-center ${reverse ? "reverse" : ""}`}>
+        <div>
+          <SectionLabel light={dark}>{eyebrow}</SectionLabel>
+          <h2 className="section-title display">{title}</h2>
+          <p className={`copy-lg ${dark ? "light-copy" : ""}`}>{copy}</p>
+          <Button to={to} variant={dark ? "gold" : "dark"}>{cta}</Button>
+        </div>
+        <div className="preview-image reveal">
+          <img src={image} alt={eyebrow} loading="lazy" />
+          <span>{eyebrow}</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function About() {
   return (
     <>
-      <PageHero eyebrow="About Trivik" title="A premium real estate development firm built on" italic="integrity" copy="Founded in 2024, Trivik Signature is built on the pillars of integrity, innovation and excellence." image={assets.front} />
+      <PageHero eyebrow="About Trivik" title="A premier real estate development firm built on" italic="integrity" copy="Founded in 2024, Trivik Signature is built on the pillars of integrity, innovation and excellence." image={assets.front} />
       <section className="block pearl">
-        <div className="container split-intro">
+        <div className="container split">
           <div>
             <SectionLabel>About Us</SectionLabel>
-            <h2 className="section-title display">We do not just build homes — we shape complete environments.</h2>
+            <h2 className="section-title display">We do not just build homes — we craft environments.</h2>
           </div>
-          <p className="copy-lg">Spread across a thoughtfully planned community featuring three towers and 408 premium residences, Trivik Signature is committed to creating a more refined idea of urban living. Our work is rooted in legal transparency, thoughtful planning, quality construction and a better day-to-day lifestyle experience for residents.</p>
+          <p className="copy-lg">Founded in 2024, Trivik Signature is a premier real estate development firm built on the pillars of integrity, innovation and excellence. Spread across a thoughtfully planned community featuring 3 iconic towers and 408 luxurious residences, we are committed to redefining the idea of urban living with legal transparency and peace of mind for every homeowner.</p>
         </div>
       </section>
       <section className="block white">
         <div className="container">
           <SectionLabel>Mission & Values</SectionLabel>
-          <div className="why-grid about-why-grid">
-            <WhyUsCard item={{ icon: "design", title: "Our mission", text: "To create inclusive, sustainable and highly livable communities that support better everyday living." }} />
-            <WhyUsCard item={{ icon: "shield", title: "Integrity", text: "Transparent communication, approvals-led planning and stronger homeowner trust." }} />
-            <WhyUsCard item={{ icon: "star", title: "Innovation", text: "Design decisions that combine modern convenience with a composed premium aesthetic." }} />
-            <WhyUsCard item={{ icon: "leaf", title: "Quality & community", text: "Superior construction, thoughtful amenities and spaces that bring residents together." }} />
+          <div className="why-grid">
+            <WhyCard item={{ title: "Our Mission", text: "To create inclusive, sustainable and livable communities that support better everyday living." }} />
+            <WhyCard item={{ title: "Integrity", text: "Transparency in communication, approvals and customer-facing documentation." }} />
+            <WhyCard item={{ title: "Innovation", text: "Design decisions that combine modern convenience with refined living." }} />
+            <WhyCard item={{ title: "Quality & Community", text: "Superior construction, thoughtful amenities and spaces that bring people together." }} />
           </div>
         </div>
       </section>
@@ -456,14 +367,8 @@ function About() {
         <div className="container">
           <SectionLabel light>Management</SectionLabel>
           <h2 className="section-title display">Managing Partners</h2>
-          <div className="mini-grid mt">
-            {partners.map((name, index) => (
-              <div className="mini-card reveal" key={name}>
-                <strong>{String(index + 1).padStart(2, "0")}</strong>
-                <span>{name}</span>
-                <em>Managing Partner</em>
-              </div>
-            ))}
+          <div className="mini-grid">
+            {partners.map((name, index) => <div className="mini-card reveal" key={name}><strong>{String(index + 1).padStart(2, "0")}</strong><span>{name}</span><em>Managing Partner</em></div>)}
           </div>
         </div>
       </section>
@@ -471,12 +376,10 @@ function About() {
         <div className="container">
           <SectionLabel>The Team</SectionLabel>
           <h2 className="section-title display">Project & Sales Team</h2>
-          <div className="table-wrap mt">
+          <div className="table-wrap">
             <table>
               <thead><tr><th>#</th><th>Name</th><th>Designation</th></tr></thead>
-              <tbody>
-                {staff.map(([name, role], index) => <tr key={name}><td>{index + 1}</td><td>{name}</td><td>{role}</td></tr>)}
-              </tbody>
+              <tbody>{staff.map(([name, role], index) => <tr key={name}><td>{index + 1}</td><td>{name}</td><td>{role}</td></tr>)}</tbody>
             </table>
           </div>
         </div>
@@ -493,47 +396,34 @@ function Residences() {
       <PageHero eyebrow="Residences" title="Premium apartments and duplex homes planned for" italic="modern family life" copy="Every residence has been designed with smart space planning, natural ventilation and an uncompromising eye for detail." image={assets.full} />
       <section className="block pearl">
         <div className="container fact-grid">
-          <Fact k="Project Name" v={project.name} />
-          <Fact k="Type" v="Premium residential apartments & duplex homes" />
-          <Fact k="Project Area" v="6.34 acres" />
-          <Fact k="Configuration" v="3 BHK apartments & duplex homes" />
-          <Fact k="Total Units" v="408 residences" />
-          <Fact k="Tower Profile" v="3 towers · G+17" />
-          <Fact k="Size Range" v="1,650 – 3,624 sq. ft." />
-          <Fact k="Possession" v={project.possession} />
+          {facts.map(([label, value]) => <Fact key={label} label={label} value={value} />)}
         </div>
       </section>
       <section className="block white">
         <div className="container">
           <SectionLabel>Official Plan Reference</SectionLabel>
           <h2 className="section-title display">Typical floor and duplex level plans.</h2>
-          <div className="floor-plan-real mt reveal"><img src={assets.floorPlans} alt="Trivik Signature floor plans" loading="lazy" /></div>
+          <div className="floor-plan-real reveal"><img src={assets.floorPlans} alt="Trivik Signature floor plans" loading="lazy" /></div>
         </div>
       </section>
       <section className="block pearl">
         <div className="container">
           <div className="tabs">
-            {residences.map((item, index) => (
-              <button key={item.title} className={`tab ${active === index ? "active" : ""}`} onClick={() => setActive(index)}>{item.title}</button>
-            ))}
+            {residences.map((item, index) => <button key={item.title} className={`tab ${active === index ? "active" : ""}`} onClick={() => setActive(index)}>{item.title}</button>)}
           </div>
           <div className="floor-wrap">
             <div className="floor-card reveal">
               <SectionLabel>{residence.type}</SectionLabel>
               <h2 className="display floor-title">{residence.plan}</h2>
               <div className="num floor-area">{residence.area}</div>
-              <div className="floor-abstract">
-                {Array.from({ length: 24 }).map((_, i) => <span key={i} className={i % 7 === 0 ? "big" : i % 5 === 0 ? "tall" : ""} />)}
-              </div>
+              <div className="floor-abstract">{Array.from({ length: 24 }).map((_, i) => <span key={i} className={i % 7 === 0 ? "big" : i % 5 === 0 ? "tall" : ""} />)}</div>
             </div>
             <div className="detail-panel reveal">
               <SectionLabel light>{residence.type}</SectionLabel>
               <h2 className="display floor-title">{residence.title}</h2>
               <p className="lead">{residence.copy}</p>
-              <ul>
-                {residence.points.map((point) => <li key={point}>{point}</li>)}
-              </ul>
-              <Button to="/contact" variant="gold">Request floor plan</Button>
+              <ul>{residence.points.map((point) => <li key={point}>{point}</li>)}</ul>
+              <Button to="/contact" variant="gold">Request Floor Plan</Button>
             </div>
           </div>
         </div>
@@ -545,27 +435,26 @@ function Residences() {
 function Amenities() {
   return (
     <>
-      <PageHero eyebrow="Amenities" title="Life, beautifully" italic="curated" copy="Amenities are now presented with more imagery, better naming and stronger lifestyle categorization." image={assets.clubhouse} />
+      <PageHero eyebrow="Amenities" title="Life, beautifully" italic="curated" copy="A complete lifestyle system across wellness, recreation, family, convenience and security." image={assets.clubhouse} />
       <section className="block pearl">
         <div className="container">
           <SectionLabel>Amenity Categories</SectionLabel>
-          <h2 className="section-title display">A better-organized lifestyle offering.</h2>
-          <div className="category-grid">
-            {amenityCategories.map((item) => <CategoryCard key={item.title} item={item} />)}
+          <div className="amenity-groups">
+            {Object.entries(amenityGroups).map(([group, list]) => (
+              <div className="amenity-group reveal" key={group}>
+                <h3>{group}</h3>
+                <ul>{list.map((item) => <li key={item}>{item}</li>)}</ul>
+              </div>
+            ))}
           </div>
         </div>
       </section>
       <section className="block white">
         <div className="container">
-          <div className="section-head split-head">
-            <div>
-              <SectionLabel>Featured Amenity Visuals</SectionLabel>
-              <h2 className="section-title display">Image-led presentation for stronger recall.</h2>
-            </div>
-            <p className="copy-lg">Every amenity visual now carries its own name and supporting line so users understand what they are viewing at a glance.</p>
-          </div>
-          <div className="amenity-feature-grid">
-            {amenityHighlights.map((item) => <AmenityFeatureCard key={item.title} item={item} />)}
+          <SectionLabel>Amenity Visuals</SectionLabel>
+          <h2 className="section-title display">Spaces that support leisure, wellness and community life.</h2>
+          <div className="amenity-gallery">
+            {amenityHighlights.map(([title, tag, image]) => <AmenityTile key={title} title={title} tag={tag} image={image} />)}
           </div>
         </div>
       </section>
@@ -577,18 +466,18 @@ function Offers() {
   return (
     <>
       <PageHero eyebrow="Offers" title="Flexible ownership for" italic="premium living" copy="Two structured schemes designed to give buyers more breathing room while securing a home at Trivik Signature." image={assets.entrance} />
-      <section className="block navy offer-page-block">
-        <div className="container offer-page-layout">
-          <div className="offer-page-image reveal">
+      <section className="block navy">
+        <div className="container offer-page">
+          <div className="offer-image reveal">
             <img src={assets.clubhouse} alt="Clubhouse at Trivik Signature" loading="lazy" />
           </div>
           <div>
             <SectionLabel light>Current Schemes</SectionLabel>
-            <h2 className="section-title display">Clearer visual contrast. Better scheme communication.</h2>
+            <h2 className="section-title display">Ownership options with clearer financial flexibility.</h2>
             <div className="offer-grid">
               {offerSchemes.map((item) => <OfferCard key={item.badge} item={item} />)}
             </div>
-            <p className="muted-note">Terms, eligibility and final offer availability remain subject to confirmation by the Trivik Signature sales team.</p>
+            <p className="muted-note">Terms, eligibility and final offer availability are subject to confirmation by the Trivik Signature sales team.</p>
           </div>
         </div>
       </section>
@@ -606,32 +495,24 @@ function Contact() {
     <>
       <PageHero eyebrow="Contact" title="Receive the brochure, floor plans and" italic="availability details" copy="Choose what you need — current price sheet, floor plan, duplex availability or a private site visit — and our team will follow up directly." image={assets.entrance} />
       <section className="block pearl">
-        <div className="container contact-layout">
+        <div className="container contact-grid">
           <div>
             <SectionLabel>Contact Information</SectionLabel>
             <h2 className="section-title display">Let us arrange the next step.</h2>
-            <div className="contact-card-stack reveal">
-              <div className="contact-info-card">
-                <div className="contact-line"><strong>Phone</strong><span>{project.phone}</span></div>
-                <div className="contact-line"><strong>Email</strong><span>{project.email}</span></div>
-                <div className="contact-line"><strong>Website</strong><span>{project.website}</span></div>
-                <div className="contact-line"><strong>Address</strong><span>{project.address}</span></div>
+            <div className="contact-card reveal">
+              <p><strong>Phone</strong><span>{project.phone}</span></p>
+              <p><strong>Email</strong><span>{project.email}</span></p>
+              <p><strong>Website</strong><span>{project.website}</span></p>
+              <p><strong>Address</strong><span>{project.address}</span></p>
+            </div>
+            <div className="contact-trust">
+              <div className="rera-mini">
+                <img src={assets.reraLogo} alt="RERA Approved" />
+                <div><small>RERA Registration</small><strong>{project.rera}</strong></div>
               </div>
-              <div className="compliance-row">
-                <div className="compliance-card">
-                  <div className="compliance-icon"><img src={assets.rera} alt="RERA approved" /></div>
-                  <div>
-                    <small>RERA Registration</small>
-                    <strong>{project.rera}</strong>
-                  </div>
-                </div>
-                <div className="compliance-card funding-card">
-                  <div className="funding-pill">Funding</div>
-                  <div>
-                    <small>Project funding support</small>
-                    <strong>Mortgaged & funded by Bajaj Housing Finance Limited</strong>
-                  </div>
-                </div>
+              <div className="funding-mini">
+                <small>Funding Disclosure</small>
+                <strong>Mortgaged & funded by Bajaj Housing Finance Limited</strong>
               </div>
             </div>
           </div>
@@ -651,7 +532,7 @@ function Contact() {
               </select>
             </label>
             <label>Message<textarea rows="5" placeholder="Tell us what you would like to receive" /></label>
-            <button className="btn dark" type="submit">Get price sheet & arrange site visit</button>
+            <button className="btn dark" type="submit">Get Price Sheet & Arrange Site Visit</button>
           </form>
         </div>
       </section>
@@ -690,17 +571,14 @@ function CustomerLogin() {
   return (
     <section className="login-page">
       <div className="login-card reveal is-visible">
-        <div className="portal-login-header">
-          <img src={assets.logo} alt="Trivik Signature logo" />
-          <div className="portal-icon"><Icon name="lock" /></div>
-        </div>
+        <div className="login-logo"><img src={assets.logo} alt="Trivik Signature logo" /></div>
         <SectionLabel>Customer Portal</SectionLabel>
         <h1 className="display">Secure customer login</h1>
-        <p>Enter your registered email and password to view your personal flat details, construction progress, payment summary, pending dues and documents.</p>
+        <p>Enter your registered email and password to view your flat details, construction progress, payment summary, pending dues and documents.</p>
         <form onSubmit={login}>
           <label>Email<input value={email} onChange={(e) => setEmail(e.target.value)} type="email" /></label>
           <label>Password<input value={password} onChange={(e) => setPassword(e.target.value)} type="password" /></label>
-          <button className="btn dark full" type="submit" disabled={loading}>{loading ? "Logging in..." : "Login & view customer details"}</button>
+          <button className="btn dark full" type="submit" disabled={loading}>{loading ? "Logging in..." : "Login & View Customer Details"}</button>
           {error && <div className="error">{error}</div>}
           <div className="demo-note"><strong>Demo login</strong><br />Email: john.doe@gmail.com<br />Password: johndoe</div>
         </form>
@@ -794,7 +672,7 @@ function CustomerDashboard() {
           </PortalCard>
           <PortalCard title="Documents" className="mt">
             <h2 className="display portal-heading">Your Documents</h2>
-            <div className="doc-grid">{documents.map((item) => <div className="doc-card" key={item.name}><div className="category-icon"><Icon name="shield" /></div><strong>{item.name}</strong><span>{item.status}</span></div>)}</div>
+            <div className="doc-grid">{documents.map((item) => <div className="doc-card" key={item.name}><strong>{item.name}</strong><span>{item.status}</span></div>)}</div>
           </PortalCard>
           <div className="dashboard-grid mt">
             <PortalCard title="Support">
@@ -813,22 +691,24 @@ function CustomerDashboard() {
   );
 }
 
+function PortalCard({ children, title, dark = false, className = "" }) {
+  return <div className={`portal-card ${dark ? "dark" : ""} ${className}`}><SectionLabel light={dark}>{title}</SectionLabel>{children}</div>;
+}
+
+function PortalRows({ rows }) {
+  return <div className="portal-list">{rows.map(([a, b]) => <div className="portal-row" key={`${a}-${b}`}><span>{a}</span><strong>{b}</strong></div>)}</div>;
+}
+
 function Footer() {
   return (
     <footer className="site-footer">
       <div className="container footer-grid">
         <div>
-          <img src={assets.logoWhite} alt="Trivik Signature logo" className="footer-logo" />
+          <img src={assets.logoWhite} alt="Trivik Signature logo" />
           <p>Building tomorrow's communities today — where every detail is crafted with purpose, elegance and enduring quality.</p>
         </div>
-        <div>
-          <strong>Contact</strong>
-          <p>{project.phone}<br />{project.email}<br />{project.address}</p>
-        </div>
-        <div>
-          <strong>Compliance</strong>
-          <p>RERA: {project.rera}<br />Mortgaged & funded by Bajaj Housing Finance Limited.</p>
-        </div>
+        <p>{project.phone}<br />{project.email}<br />{project.address}</p>
+        <p>RERA: {project.rera}<br />Mortgaged & funded by Bajaj Housing Finance Limited.</p>
       </div>
     </footer>
   );
@@ -837,8 +717,8 @@ function Footer() {
 function FloatingContactRail() {
   return (
     <div className="floating-rail">
-      <a href={project.whatsapp} target="_blank" rel="noreferrer" aria-label="WhatsApp"><Icon name="whatsapp" /></a>
-      <a href={project.phoneLink} aria-label="Call"><Icon name="phone" /></a>
+      <a href={project.whatsapp} target="_blank" rel="noreferrer" aria-label="WhatsApp">WA</a>
+      <a href={project.phoneLink} aria-label="Call">☎</a>
     </div>
   );
 }
@@ -863,12 +743,9 @@ function App() {
     const setupRevealAnimations = () => {
       const nodes = document.querySelectorAll(".reveal, .block, .portal-card, .fact, .offer-card, .lead-form");
 
-      // Make already-visible top-of-page content appear immediately on route changes.
       nodes.forEach((node) => {
         const rect = node.getBoundingClientRect();
-        if (rect.top < window.innerHeight * 0.92) {
-          node.classList.add("is-visible");
-        }
+        if (rect.top < window.innerHeight * 0.95) node.classList.add("is-visible");
       });
 
       if (!("IntersectionObserver" in window)) {
@@ -883,17 +760,15 @@ function App() {
             observer.unobserve(entry.target);
           }
         });
-      }, { threshold: 0.08, rootMargin: "0px 0px -4% 0px" });
+      }, { threshold: 0.06, rootMargin: "0px 0px -2% 0px" });
 
       nodes.forEach((node) => observer.observe(node));
 
-      // Safety fallback: never leave page content invisible if the observer misses a route render.
       fallbackTimer = window.setTimeout(() => {
         nodes.forEach((node) => node.classList.add("is-visible"));
-      }, 900);
+      }, 700);
     };
 
-    // Wait one frame so React Router has mounted the new page before we query elements.
     const frame = window.requestAnimationFrame(setupRevealAnimations);
 
     return () => {
