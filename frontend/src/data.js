@@ -1,8 +1,8 @@
 export const assets = {
   hero: "/assets/hero-entrance.webp",
-  entrance: "/assets/entrance-gateway.webp",
   aerial: "/assets/aerial-master.webp",
   clubhouse: "/assets/clubhouse-pool.webp",
+  entrance: "/assets/entrance-gateway.webp",
   front: "/assets/front-view.webp",
   full: "/assets/full-view.webp",
   landscape: "/assets/landscape-view.webp",
@@ -10,7 +10,7 @@ export const assets = {
   logo: "/assets/trivik-logo-blue.png",
   logoWhite: "/assets/trivik-logo-white.png",
   floorPlans: "/assets/floor-plans.webp",
-  rera: "/assets/rera-approved.png",
+  reraLogo: "/assets/rera-approved.png",
   amenityClubhouse: "/assets/amenity-clubhouse.jpg",
   amenityAmphitheatre: "/assets/amenity-amphitheatre.jpg",
   amenityButterfly: "/assets/amenity-butterfly-park.jpg",
@@ -40,8 +40,19 @@ export const project = {
 export const stats = [
   ["408", "Premium residences"],
   ["3", "High-rise towers"],
-  ["6.34", "Acres of community"],
+  ["6.34", "Acres planned"],
   ["G+17", "Tower profile"]
+];
+
+export const facts = [
+  ["Project Type", "Premium Residential Apartments & Duplex Homes"],
+  ["Developer", "Trivik Signature"],
+  ["Configuration", "3 BHK Apartments & Duplex Homes"],
+  ["Size Range", "1,650 – 3,624 sq. ft."],
+  ["Total Units", "408 Apartments"],
+  ["Project Area", "6.34 Acres"],
+  ["Possession", "December 2031 expected"],
+  ["RERA", "PRM/KA/RERA/1250/304/PR/260226/008490"]
 ];
 
 export const residences = [
@@ -63,210 +74,71 @@ export const residences = [
   }
 ];
 
+export const visualShowcase = [
+  ["Arrival Gateway", "First Impression", assets.entrance],
+  ["Aerial Master View", "Project Scale", assets.aerial],
+  ["Front Elevation", "Architecture", assets.front],
+  ["Landscape View", "Open Spaces", assets.landscape]
+];
+
 export const whyUs = [
   {
-    icon: "shield",
     title: "Trust-led development",
-    text: "RERA registered planning, transparent communication and clear customer-facing documentation create confidence at every stage."
+    text: "RERA registered planning, transparent communication and clear customer-facing documentation."
   },
   {
-    icon: "location",
-    title: "Soukya Road advantage",
-    text: "A rapidly growing East Bengaluru address with access to Whitefield, IT corridors and the larger growth belt around STRR connectivity."
+    title: "East Bengaluru address",
+    text: "A growing residential corridor with access to Whitefield, Soukya Road and surrounding employment zones."
   },
   {
-    icon: "design",
-    title: "Thoughtful design language",
-    text: "A premium material palette, carefully composed façades and high-utility residences create a more refined everyday experience."
+    title: "Thoughtful planning",
+    text: "Spacious homes, practical circulation, natural light and amenities planned around everyday use."
   },
   {
-    icon: "leaf",
-    title: "Landscape-first lifestyle",
-    text: "Open greens, activity courts, social spaces and family-friendly outdoor zones give the project more breathing space and depth."
-  }
-];
-
-export const approvals = [
-  {
-    title: "RERA Approved",
-    subtitle: "Buyer trust & legal transparency",
-    text: "Registered under Karnataka RERA with clear disclosure standards for customers.",
-    image: assets.rera,
-    value: project.rera,
-    kind: "image"
-  },
-  {
-    title: "STRR Connectivity",
-    subtitle: "Regional access advantage",
-    text: "A simple location-led connectivity marker for East Bengaluru's growth corridor.",
-    value: "Strategic growth corridor",
-    kind: "badge"
-  }
-];
-
-export const visualShowcase = [
-  {
-    title: "Arrival Gateway",
-    tag: "First impression",
-    copy: "A composed entrance sequence that sets the tone for the development.",
-    image: assets.hero
-  },
-  {
-    title: "Master Aerial",
-    tag: "Project scale",
-    copy: "An overall view of the three-tower residential community across 6.34 acres.",
-    image: assets.aerial
-  },
-  {
-    title: "Front Elevation",
-    tag: "Architecture",
-    copy: "A cleaner façade language with a modern residential presence.",
-    image: assets.front
-  },
-  {
-    title: "Landscape View",
-    tag: "Outdoor lifestyle",
-    copy: "Open green edges and relaxed movement spaces built for daily life.",
-    image: assets.landscape
+    title: "Lifestyle depth",
+    text: "Clubhouse, landscaped courts, sport zones and family spaces that extend life beyond the apartment."
   }
 ];
 
 export const amenityHighlights = [
-  {
-    title: "Clubhouse",
-    category: "Lifestyle hub",
-    copy: "A premium social anchor for indoor leisure, gatherings and everyday comfort.",
-    image: assets.amenityClubhouse
-  },
-  {
-    title: "Amphitheatre",
-    category: "Community zone",
-    copy: "A welcoming outdoor performance and gathering space within the landscape.",
-    image: assets.amenityAmphitheatre
-  },
-  {
-    title: "Butterfly Park",
-    category: "Landscape feature",
-    copy: "A richly planted green pocket designed to feel calm, vibrant and memorable.",
-    image: assets.amenityButterfly
-  },
-  {
-    title: "Palm Court",
-    category: "Arrival plaza",
-    copy: "A refined outdoor court that extends the character of the clubhouse precinct.",
-    image: assets.amenityPalm
-  },
-  {
-    title: "Children's Play Area",
-    category: "Family amenity",
-    copy: "A bright, safe and active zone designed for younger residents.",
-    image: assets.amenityPlay
-  },
-  {
-    title: "Tennis Court",
-    category: "Sport & fitness",
-    copy: "A full-sized outdoor court integrated into the sports edge of the community.",
-    image: assets.amenityTennis
-  },
-  {
-    title: "Basketball Court",
-    category: "Sport & fitness",
-    copy: "An active play court for recreation and high-energy outdoor use.",
-    image: assets.amenityBasketball
-  },
-  {
-    title: "Cricket Pitch",
-    category: "Sport & fitness",
-    copy: "A dedicated practice zone that expands the project’s athletic offering.",
-    image: assets.amenityCricket
-  },
-  {
-    title: "Banyan Tree Court",
-    category: "Calm retreat",
-    copy: "A shaded sit-out zone that gives the landscape a strong sense of identity.",
-    image: assets.amenityBanyan
-  },
-  {
-    title: "Shuttle Court",
-    category: "Sport & fitness",
-    copy: "A multi-use racquet court to support a more complete lifestyle programme.",
-    image: assets.amenityShuttle
-  },
-  {
-    title: "Jogging Track",
-    category: "Wellness",
-    copy: "A pleasant movement loop for everyday fitness within the community edge.",
-    image: assets.amenityJogging
-  }
+  ["Clubhouse", "Lifestyle Hub", assets.amenityClubhouse],
+  ["Amphitheatre", "Community Zone", assets.amenityAmphitheatre],
+  ["Butterfly Park", "Landscape Feature", assets.amenityButterfly],
+  ["Palm Court", "Arrival Plaza", assets.amenityPalm],
+  ["Children's Play Area", "Family Amenity", assets.amenityPlay],
+  ["Tennis Court", "Sport & Fitness", assets.amenityTennis],
+  ["Basketball Court", "Sport & Fitness", assets.amenityBasketball],
+  ["Cricket Pitch", "Sport & Fitness", assets.amenityCricket],
+  ["Banyan Tree Court", "Calm Retreat", assets.amenityBanyan],
+  ["Shuttle Court", "Sport & Fitness", assets.amenityShuttle],
+  ["Jogging Track", "Wellness", assets.amenityJogging]
 ];
 
-export const amenityCategories = [
-  {
-    title: "Lifestyle & recreation",
-    icon: "star",
-    items: ["Clubhouse", "Swimming pool", "Indoor games", "Multipurpose hall", "Guest suites", "Co-working lounge"]
-  },
-  {
-    title: "Wellness & family",
-    icon: "heart",
-    items: ["Jogging track", "Children's play area", "Butterfly park", "Banyan tree sit-out", "Amphitheatre", "Palm court"]
-  },
-  {
-    title: "Sports & activity",
-    icon: "sport",
-    items: ["Tennis court", "Basketball court", "Cricket pitch", "Shuttle court", "Outdoor activity zones", "Fitness-led planning"]
-  },
-  {
-    title: "Safety & convenience",
-    icon: "shield",
-    items: ["24/7 security", "CCTV surveillance", "Power backup", "Parking", "Day care support", "Healthcare & convenience spaces"]
-  }
-];
+export const amenityGroups = {
+  "Lifestyle & Recreation": ["Clubhouse", "Swimming Pool with Deck", "Indoor Games Room", "Multipurpose Hall / Banquet Hall", "Guest Suites", "Co-working Lounge"],
+  "Outdoor & Family": ["Amphitheatre", "Children's Play Area", "Butterfly Park", "Palm Court", "Banyan Tree Court", "Landscaped Gardens"],
+  "Sports & Wellness": ["Tennis Court", "Basketball Court", "Cricket Pitch", "Shuttle Court", "Jogging Track", "Fitness-led open spaces"],
+  "Safety & Convenience": ["24/7 Security", "CCTV Surveillance", "Power Backup", "Parking", "Day Care Support", "Healthcare & Convenience Spaces"]
+};
 
-export const journeySteps = [
-  {
-    title: "RERA Approved",
-    status: "active",
-    stage: "Completed",
-    text: "Regulatory approval secured and project registration visible for buyer confidence."
-  },
-  {
-    title: "Construction Started",
-    status: "blur",
-    stage: "Upcoming",
-    text: "Initial construction milestone to be updated after official project progress."
-  },
-  {
-    title: "Structure Progress",
-    status: "blur",
-    stage: "Upcoming",
-    text: "Tower progress and structural milestones will be shared as development advances."
-  },
-  {
-    title: "OC & CC Received",
-    status: "blur",
-    stage: "Upcoming",
-    text: "Occupancy and completion clearances will be updated once applicable."
-  },
-  {
-    title: "Possession Handover",
-    status: "blur",
-    stage: "Upcoming",
-    text: "Final handover milestone after construction, inspections and documentation."
-  }
+export const milestones = [
+  ["RERA Approved", "Active", "The first confirmed milestone in the development journey.", true],
+  ["Construction Progress", "Upcoming", "Civil structure, services and finishing milestones will follow.", false],
+  ["Quality Handover", "Upcoming", "A carefully documented transition from construction to delivery.", false],
+  ["Community Life", "Upcoming", "A composed residential environment shaped for everyday living.", false]
 ];
 
 export const offerSchemes = [
   {
     badge: "Trivik T20 Scheme",
     title: "Pay 20%, relax for 20 months",
-    points: ["Secure your apartment with only 20% upfront", "No payment pressure for the next 20 months", "Ideal for buyers planning cash flow with more flexibility"],
+    points: ["Secure your home with 20% upfront", "Enjoy a payment-free window for 20 months", "Designed for flexible ownership planning"],
     tone: "navy"
   },
   {
     badge: "EMI Holiday Scheme",
     title: "Pay 20%, no EMI for 25 months",
-    points: ["Book your residence with a 20% initial outflow", "Enjoy a 25-month EMI holiday period", "A structured option for thoughtful financial planning"],
+    points: ["Book with a 20% initial outflow", "Enjoy a 25-month EMI holiday period", "Plan your finances with more control"],
     tone: "sand"
   }
 ];
