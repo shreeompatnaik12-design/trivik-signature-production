@@ -307,17 +307,17 @@ function Home() {
       <section className="block white intro-band">
         <div className="container split-intro">
           <div>
-            <SectionLabel>Welcome</SectionLabel>
-            <h2 className="section-title display">Not just a residence — a more complete way of living.</h2>
+            <SectionLabel>Welcome to Trivik</SectionLabel>
+            <h2 className="section-title display">A signature address for families who want more from everyday living.</h2>
           </div>
-          <p className="copy-lg">The homepage now gives a stronger sense of the project: premium positioning, trust markers, a richer visual showcase, a clearer amenities story and structured sections that feel more considered as you scroll.</p>
+          <p className="copy-lg">At Trivik Signature, refined architecture, spacious residences, landscaped experiences and thoughtful amenities come together to create a home that feels private, practical and quietly premium.</p>
         </div>
       </section>
 
       <section className="block pearl">
         <div className="container">
           <SectionLabel>Trust & Approvals</SectionLabel>
-          <h2 className="section-title display">Compliance and connectivity, presented with more confidence.</h2>
+          <h2 className="section-title display">A homebuying journey built on clarity and confidence.</h2>
           <div className="trust-badge-grid">
             {approvals.map((item) => <TrustBadge key={item.title} item={item} />)}
           </div>
@@ -327,7 +327,7 @@ function Home() {
       <section className="block navy">
         <div className="container">
           <SectionLabel light>Why Trivik</SectionLabel>
-          <h2 className="section-title display">Clear reasons to choose this address.</h2>
+          <h2 className="section-title display">Designed for comfort, confidence and long-term value.</h2>
           <div className="why-grid">
             {whyUs.map((item) => <WhyUsCard key={item.title} item={item} />)}
           </div>
@@ -339,9 +339,9 @@ function Home() {
           <div className="section-head split-head">
             <div>
               <SectionLabel>Visual Showcase</SectionLabel>
-              <h2 className="section-title display">Every visual now speaks for itself.</h2>
+              <h2 className="section-title display">A closer look at the spaces that define the community.</h2>
             </div>
-            <p className="copy-lg">Hover over each frame to see what you are viewing — so the section feels informative, not decorative.</p>
+            <p className="copy-lg">From the arrival gateway to the master aerial view, every visual captures a different layer of the Trivik Signature lifestyle.</p>
           </div>
           <div className="visual-grid">
             {visualShowcase.map((item) => <VisualCard key={item.title} item={item} />)}
@@ -352,7 +352,7 @@ function Home() {
       <PreviewSplit
         eyebrow="About Us"
         title="Built on integrity, innovation and a premium development outlook."
-        copy="The Trivik brand story, management section and team details continue to sit on their own page, but the homepage now introduces that story with more warmth and context."
+        copy="Founded with a commitment to transparent development and better urban living, Trivik Signature brings together strong planning, legal clarity and a customer-first approach."
         image={assets.front}
         to="/about"
         cta="Read about us"
@@ -360,8 +360,8 @@ function Home() {
 
       <PreviewSplit
         eyebrow="Residences"
-        title="Floor plans, residence formats and project details — with more breathing space."
-        copy="The residences page continues to hold the full plan reference and configuration details, while the homepage gives customers a clearer preview of what to expect."
+        title="Spacious residences crafted around light, comfort and privacy."
+        copy="Explore well-planned 3 BHK homes and limited duplex residences with generous spaces, private balconies, natural ventilation and layouts made for modern family life."
         image={assets.floorPlans}
         to="/residences"
         cta="Explore residences"
@@ -373,9 +373,9 @@ function Home() {
           <div className="section-head split-head">
             <div>
               <SectionLabel>Amenities</SectionLabel>
-              <h2 className="section-title display">More imagery. Better naming. Stronger lifestyle recall.</h2>
+              <h2 className="section-title display">Amenities designed for leisure, wellness and community.</h2>
             </div>
-            <p className="copy-lg">Instead of generic amenity references, the website now highlights recognizable lifestyle spaces from the actual amenity renders.</p>
+            <p className="copy-lg">Clubhouse moments, landscaped courts, active sports zones and family-friendly spaces shape a lifestyle that feels complete beyond the apartment.</p>
           </div>
           <div className="amenity-preview-grid">
             {homeAmenities.map((item) => <AmenityPreviewCard key={item.title} item={item} />)}
@@ -390,8 +390,8 @@ function Home() {
         <div className="container">
           <div className="timeline-heading">
             <SectionLabel light>Project Milestones</SectionLabel>
-            <h2 className="section-title display">Project <em>Timeline</em></h2>
-            <p>Only the RERA milestone is active right now. The next milestones stay softly blurred until the project advances.</p>
+            <h2 className="section-title display">From <em>vision</em> to reality</h2>
+            <p>RERA approval is the current confirmed milestone. The upcoming stages remain soft until each milestone is officially achieved.</p>
           </div>
           <div className="timeline-grid reveal">
             {journeySteps.map((item, index) => <JourneyCard key={item.title} item={item} index={index} />)}
@@ -406,8 +406,8 @@ function Home() {
           </div>
           <div>
             <SectionLabel light>Flexible Schemes</SectionLabel>
-            <h2 className="section-title display">Offer cards with proper contrast and cleaner proportion.</h2>
-            <p className="copy-lg light-copy">The offer section now uses differentiated colour treatments and better card balance, instead of two identical boxes competing for attention.</p>
+            <h2 className="section-title display">Flexible schemes designed to make ownership easier.</h2>
+            <p className="copy-lg light-copy">Choose from thoughtfully structured payment options created to give buyers more breathing room while securing a premium home at Trivik Signature.</p>
             <div className="offer-grid">
               {offerSchemes.map((item) => <OfferCard key={item.badge} item={item} />)}
             </div>
@@ -417,8 +417,8 @@ function Home() {
 
       <PreviewSplit
         eyebrow="Customer Portal"
-        title="A private login for customer details, payments and construction progress."
-        copy="The customer login remains functional with the same demo credentials, but the interface now feels more premium and aligned with the rest of the website."
+        title="A private customer space for flat details, payments and progress."
+        copy="The customer portal is designed to give buyers a clear view of their apartment details, construction updates, payment summary, documents and CRM support."
         image={assets.aerial}
         to="/customer-login"
         cta="Open customer portal"
@@ -854,19 +854,54 @@ function StickyCTA() {
 }
 
 function App() {
+  const { pathname } = useLocation();
+
   useEffect(() => {
-    const nodes = document.querySelectorAll(".reveal, .block, .portal-card, .fact, .offer-card, .lead-form");
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          observer.unobserve(entry.target);
+    let observer;
+    let fallbackTimer;
+
+    const setupRevealAnimations = () => {
+      const nodes = document.querySelectorAll(".reveal, .block, .portal-card, .fact, .offer-card, .lead-form");
+
+      // Make already-visible top-of-page content appear immediately on route changes.
+      nodes.forEach((node) => {
+        const rect = node.getBoundingClientRect();
+        if (rect.top < window.innerHeight * 0.92) {
+          node.classList.add("is-visible");
         }
       });
-    }, { threshold: 0.1 });
-    nodes.forEach((node) => observer.observe(node));
-    return () => observer.disconnect();
-  }, []);
+
+      if (!("IntersectionObserver" in window)) {
+        nodes.forEach((node) => node.classList.add("is-visible"));
+        return;
+      }
+
+      observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.08, rootMargin: "0px 0px -4% 0px" });
+
+      nodes.forEach((node) => observer.observe(node));
+
+      // Safety fallback: never leave page content invisible if the observer misses a route render.
+      fallbackTimer = window.setTimeout(() => {
+        nodes.forEach((node) => node.classList.add("is-visible"));
+      }, 900);
+    };
+
+    // Wait one frame so React Router has mounted the new page before we query elements.
+    const frame = window.requestAnimationFrame(setupRevealAnimations);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      if (observer) observer.disconnect();
+      if (fallbackTimer) window.clearTimeout(fallbackTimer);
+    };
+  }, [pathname]);
 
   return (
     <>
