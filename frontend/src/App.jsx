@@ -20,31 +20,32 @@ function Header() {
   const [open, setOpen] = useState(false);
   const nav = [
     ["Home", "/"],
-    ["About", "/about"],
+    ["About Us", "/about"],
     ["Residences", "/residences"],
     ["Amenities", "/amenities"],
     ["Offers", "/offers"],
-    ["Contact", "/contact"]
+    ["Contact Us", "/contact"]
   ];
 
   return (
-    <header>
-      <div className="container nav">
-        <Link to="/" className="brand"><img src={assets.logo} alt="Trivik Signature logo" /></Link>
-        <nav className="nav-links">
+    <header className="premium-header">
+      <div className="container nav premium-nav">
+        <Link to="/" className="brand premium-brand"><img src={assets.logo} alt="Trivik Signature logo" /></Link>
+        <nav className="nav-links refined-links">
           {nav.map(([label, path]) => <NavLink key={path} to={path}>{label}</NavLink>)}
         </nav>
-        <div className="nav-actions">
-          <Button to="/customer-login" variant="gold">Customer Login</Button>
-          <button className="hamburger" onClick={() => setOpen(!open)} aria-label="Open menu">☰</button>
+        <div className="nav-actions refined-actions">
+          <Link to="/customer-login" className="icon-btn" aria-label="Customer login">♙</Link>
+          <button className="hamburger icon-btn" onClick={() => setOpen(true)} aria-label="Open menu">☰</button>
         </div>
       </div>
-      {open && (
-        <div className="mobile-menu">
-          {nav.map(([label, path]) => <Link key={path} to={path} onClick={() => setOpen(false)}>{label}</Link>)}
-          <Link to="/customer-login" onClick={() => setOpen(false)}>Customer Login</Link>
-        </div>
-      )}
+      <div className={`menu-scrim ${open ? "show" : ""}`} onClick={() => setOpen(false)} />
+      <aside className={`side-drawer ${open ? "show" : ""}`} aria-hidden={!open}>
+        <div className="drawer-top"><img src={assets.logo} alt="Trivik Signature logo" /><button onClick={() => setOpen(false)} aria-label="Close menu">×</button></div>
+        <Link className="drawer-primary" to="/" onClick={() => setOpen(false)}>Home</Link>
+        {nav.slice(1).map(([label, path]) => <Link key={path} to={path} onClick={() => setOpen(false)}>{label}</Link>)}
+        <Link className="drawer-login" to="/customer-login" onClick={() => setOpen(false)}>Customer Login</Link>
+      </aside>
     </header>
   );
 }
@@ -74,183 +75,206 @@ function ImageTile({ title, src, tag, large = false }) {
   );
 }
 
-function LeadMagnetStrip({ compact = false }) {
-  const items = [
-    ["Price Sheet", "Get the latest unit pricing and scheme details.", "/contact"],
-    ["Floor Plans", "Download 3 BHK and duplex plan references.", "/residences"],
-    ["Site Visit", "Schedule a private walkthrough with our team.", "/contact"]
-  ];
-
-  return (
-    <section className={`lead-magnet ${compact ? "compact" : ""}`}>
-      <div className="container lead-magnet-grid">
-        {items.map(([title, copy, to]) => (
-          <Link className="lead-magnet-card" to={to} key={title}>
-            <span>{title}</span>
-            <strong>{copy}</strong>
-            <em>Request now →</em>
-          </Link>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function CinematicGallery() {
-  const [active, setActive] = useState(null);
-  const frames = [
-    { role: "Arrival", src: assets["hero-entrance"], title: "A composed arrival that introduces the scale of the address." },
-    { role: "Masterplan", src: assets["aerial-master"], title: "Aerial planning that reveals the full 6.34-acre community." },
-    { role: "Lifestyle", src: assets["clubhouse-pool"], title: "Clubhouse, pool and leisure zones forming the social heart." },
-    { role: "Architecture", src: assets["front-view"], title: "A clean architectural language with calm residential presence." },
-    { role: "Landscape", src: assets["landscape-view"], title: "Open green pockets designed for daily pause and family life." }
-  ];
-
-  return (
-    <section className="block pearl cinematic-block">
-      <div className="container">
-        <div className="cinematic-heading">
-          <div>
-            <SectionLabel>Visual Journey</SectionLabel>
-            <h2 className="section-title display">From first arrival to everyday life.</h2>
-          </div>
-          <p className="copy-lg">Each render now has a role: arrival, scale, lifestyle, architecture and landscape. Click any frame to view it larger.</p>
-        </div>
-        <div className="cinematic-gallery">
-          {frames.map((item, index) => (
-            <button className={`cinematic-frame frame-${index + 1}`} key={item.role} onClick={() => setActive(item)}>
-              <img src={item.src} alt={item.title} loading="lazy" />
-              <span>{item.role}</span>
-              <strong className="display">{item.title}</strong>
-            </button>
-          ))}
-        </div>
-      </div>
-      {active && (
-        <div className="lightbox" onClick={() => setActive(null)}>
-          <button aria-label="Close image" className="lightbox-close">×</button>
-          <img src={active.src} alt={active.title} />
-          <div><span>{active.role}</span><strong className="display">{active.title}</strong></div>
-        </div>
-      )}
-    </section>
-  );
-}
-
 function Home() {
   return (
     <>
-      <section className="hero">
-        <img className="hero-bg" src={assets["hero-entrance"]} alt="Trivik Signature entrance approach" />
-        <div className="hero-overlay" />
-        <div className="container hero-content">
-          <div>
-            <div className="eyebrow">Soukya Road · Samethanahalli · East Bengaluru</div>
-            <h1 className="display">The Art of <em>Elevated</em> Living</h1>
-            <p className="lead">Welcome to Trivik Signature — where modern architecture meets an elevated way of life. A community of 408 premium residences across 3 stunning towers, designed for those who refuse to compromise on quality, comfort or aesthetics.</p>
+      <section className="hero refined-hero">
+        <img className="hero-bg" src={assets["aerial-master"]} alt="Trivik Signature premium residences" />
+        <div className="hero-overlay refined-overlay" />
+        <div className="container hero-content refined-hero-content">
+          <div className="hero-copy-box">
+            <div className="eyebrow">Welcome to Trivik Signature</div>
+            <h1 className="display refined-headline">Crafted Living.<br />Elevated Experiences.</h1>
+            <p className="lead refined-lead">Premium 3 BHK residences and limited duplex homes near Whitefield, East Bengaluru — designed for families who value space, comfort, legal clarity and long-term growth.</p>
             <div className="hero-actions">
-              <Button to="/contact" variant="gold">Get Current Price Sheet</Button>
-              <Button to="/residences" variant="outline">Download Floor Plans</Button>
+              <Button to="/contact" variant="gold">Enquire Now</Button>
+              <Button to="/residences" variant="outline">Explore Residences</Button>
             </div>
           </div>
-          <aside className="snapshot">
-            <p className="tiny-title">Project Snapshot</p>
-            <h2 className="display">Trivik Signature</h2>
-            <div className="stats">
-              {stats.map(([v, l]) => <div className="stat" key={l}><strong className="num">{v}</strong><span>{l}</span></div>)}
-            </div>
-            <div className="snapshot-lines">
-              <div>Configuration: Spacious 3 BHK apartments and duplex homes</div>
-              <div>Size range: 1,650 – 3,624 sq. ft.</div>
-              <div>RERA: {project.rera}</div>
-            </div>
-          </aside>
-        </div>
-      </section>
-
-      <LeadMagnetStrip />
-
-      <section className="block pearl">
-        <div className="container split">
-          <div>
-            <SectionLabel>Discover Modern Living</SectionLabel>
-            <h2 className="section-title display">This is not just a home. This is your signature address.</h2>
-          </div>
-          <div>
-            <p className="copy-lg">Every corner of Trivik Signature has been conceived with one purpose: to give you a life that is as beautiful as it is fulfilling. From thoughtfully designed living spaces to world-class amenities, the project blends luxury, functionality and legal transparency into one composed residential experience.</p>
-            <Button to="/about" variant="dark">Know the Brand</Button>
+          <div className="hero-play-card">
+            <span className="play-ring">▶</span>
+            <p>408 residences · 6.34 acres · G+17 towers</p>
           </div>
         </div>
       </section>
 
-      <section className="block navy">
-        <div className="container">
-          <SectionLabel light>Development Highlights</SectionLabel>
-          <h2 className="section-title display">Building tomorrow's communities today.</h2>
-          <div className="card-grid four mt">
-            <InfoCard title="3 Towers" text="Three iconic high-rise towers with a G+17 profile." light />
-            <InfoCard title="408 Residences" text="A premium residential community planned at scale." light />
-            <InfoCard title="RERA Approved" text="Registered for buyer confidence and legal transparency." light />
-            <InfoCard title="OC/CC Compliance" text="Compliance-led communication and documentation." light />
+      <ApprovalStrip />
+
+      <section className="block white spacious-block">
+        <div className="container premium-split">
+          <div>
+            <SectionLabel>About Us</SectionLabel>
+            <h2 className="section-title display">Designed for modern Bengaluru living.</h2>
+            <p className="copy-lg">Trivik Signature brings together refined architecture, thoughtful planning and lifestyle-focused amenities in one of East Bengaluru's fastest-growing residential corridors. Every space is crafted to feel open, functional and enduring.</p>
+          </div>
+          <div className="about-visual-card">
+            <img src={assets["clubhouse-pool"]} alt="Trivik Signature clubhouse and swimming pool" loading="lazy" />
+            <div className="stamp-card">Est. 2025 · Trivik Signature</div>
           </div>
         </div>
       </section>
 
-      <CinematicGallery />
+      <VisualShowcase />
+      <WhyUs />
+      <OffersPreview />
+      <AmenitiesPreview />
+      <TimelineSection />
+      <EmiCalculator />
 
-      <PreviewSection
-        image={assets["front-view"]}
-        eyebrow="About Trivik"
-        title="Built on integrity, innovation and excellence."
-        copy="Founded in 2024, Trivik Signature is a premier real estate development firm committed to redefining urban living through legal transparency, thoughtful planning, quality construction and an elevated lifestyle experience."
-        to="/about"
-        cta="Read About Us"
-      />
-
-      <PreviewSection
-        reverse
-        image={assets.floorPlans}
-        eyebrow="Residences"
-        title="Spacious 3 BHK homes and limited duplex residences."
-        copy="Explore residences ranging from 1,650 to 3,624 sq. ft., with smart space planning, natural light, cross ventilation, private balconies and a clear distinction between apartment and duplex living."
-        to="/residences"
-        cta="View Floor Plans"
-      />
-
-      <section className="block navy">
-        <div className="container home-preview">
+      <section className="block royal closing-cta">
+        <div className="container cta-panel">
           <div>
-            <SectionLabel light>Amenities</SectionLabel>
-            <h2 className="section-title display">A lifestyle system across wellness, recreation and convenience.</h2>
-            <p className="preview-copy">From clubhouse, pool, gymnasium and multipurpose hall to landscaped gardens, children's play areas, senior zones, security systems, co-working and convenience spaces — the project is planned for everyday completeness.</p>
-            <Button to="/amenities" variant="gold">Explore Amenities</Button>
+            <SectionLabel light>Private Site Visit</SectionLabel>
+            <h2 className="section-title display">Receive floor plans, availability and the latest offer details.</h2>
+            <p className="preview-copy">Speak directly with the Trivik Signature team and plan your visit with complete clarity.</p>
           </div>
-          <div className="preview-image"><img src={assets["clubhouse-pool"]} alt="Clubhouse and pool" loading="lazy" /><span>Clubhouse & Pool</span></div>
-        </div>
-      </section>
-
-      <PreviewSection
-        reverse
-        image={assets["entrance-gateway"]}
-        eyebrow="Offers"
-        title="Flexible schemes for easier ownership."
-        copy="The Trivik T20 Scheme and EMI Holiday Scheme are presented clearly so buyers can understand payment flexibility without aggressive sales language."
-        to="/offers"
-        cta="View Offers"
-      />
-
-      <section className="block royal">
-        <div className="container home-preview">
-          <div>
-            <SectionLabel light>Customer Portal</SectionLabel>
-            <h2 className="section-title display">A private space for flat, payment and construction details.</h2>
-            <p className="preview-copy">The customer portal connects to a backend so customers can view their flat details, construction completion percentage, payments, pending dues and documents securely.</p>
-            <Button to="/customer-login" variant="gold">Customer Login</Button>
+          <div className="hero-actions cta-actions">
+            <Button href={project.whatsapp} variant="gold">WhatsApp Now</Button>
+            <Button href={project.phoneLink} variant="outline">Call Sales</Button>
           </div>
-          <div className="preview-image"><img src={assets["aerial-master"]} alt="Customer portal preview" loading="lazy" /><span>Customer Dashboard</span></div>
         </div>
       </section>
     </>
+  );
+}
+
+
+
+function ApprovalStrip() {
+  const approvals = [
+    ["RERA Approved", "Legal registration secured", "▣"],
+    ["STRR Approved", "Connectivity-led growth corridor", "◉"],
+    ["CC & OC Approved", "Compliance-first planning", "✓"]
+  ];
+  return (
+    <section className="approval-strip">
+      <div className="container approval-grid">
+        {approvals.map(([title, text, icon]) => <div className="approval-item" key={title}><span>{icon}</span><strong>{title}</strong><small>{text}</small></div>)}
+      </div>
+    </section>
+  );
+}
+
+function VisualShowcase() {
+  return (
+    <section className="block pearl spacious-block">
+      <div className="container section-head-row">
+        <div><SectionLabel>Visual Showcase</SectionLabel><h2 className="section-title display">A composed preview of the community.</h2></div>
+        <Button to="/amenities" variant="dark">View More</Button>
+      </div>
+      <div className="container visual-grid">
+        <img src={assets["front-view"]} alt="Trivik Signature elevation" loading="lazy" />
+        <img src={assets["clubhouse-pool"]} alt="Trivik Signature clubhouse pool" loading="lazy" />
+        <img src={assets["entrance-gateway"]} alt="Trivik Signature entrance gateway" loading="lazy" />
+      </div>
+    </section>
+  );
+}
+
+function WhyUs() {
+  const points = [
+    ["Premium Design", "Tailored for modern families with refined finishes, generous natural light and efficient planning."],
+    ["Connectivity", "Close to Whitefield, Hope Farm, Kadugodi, schools, hospitals and daily conveniences."],
+    ["Future Growth", "Located along a high-appreciation East Bengaluru corridor with strong infrastructure momentum."],
+    ["Family-Centric Living", "Amenities, security and open spaces planned around everyday comfort and community life."]
+  ];
+  return (
+    <section className="block white spacious-block why-section">
+      <div className="container why-layout">
+        <img src={assets["landscape-view"]} alt="Trivik Signature landscaped view" loading="lazy" />
+        <div>
+          <SectionLabel>Why Us</SectionLabel>
+          <h2 className="section-title display">Quiet confidence in every detail.</h2>
+          <div className="why-list">{points.map(([title, text]) => <div key={title}><h3>{title}</h3><p>{text}</p></div>)}</div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function OffersPreview() {
+  return (
+    <section className="block navy spacious-block offer-preview-section">
+      <img src={assets["front-view"]} alt="" className="section-bg-watermark" loading="lazy" />
+      <div className="container offer-preview-grid">
+        <div>
+          <SectionLabel light>Exclusive Offers For You</SectionLabel>
+          <h2 className="section-title display">Flexible schemes for easier ownership.</h2>
+          <div className="compact-offer"><strong>Trivik T20 Scheme</strong><p>Pay 20% upfront and enjoy a simplified payment plan for the next 20 months.</p></div>
+          <div className="compact-offer"><strong>EMI Holiday Scheme</strong><p>Pay 20% down payment and enjoy no EMI burden for the next 25 months.</p></div>
+          <Button to="/offers" variant="gold">Check Eligibility</Button>
+        </div>
+        <img src={assets["aerial-master"]} alt="Trivik Signature aerial view" loading="lazy" />
+      </div>
+    </section>
+  );
+}
+
+function AmenitiesPreview() {
+  const amenities = ["Festival Plaza", "Kids School Pick-up & Drop Point", "Driver Room", "Security Guard Room", "EV Charging Point", "Swimming Pool"];
+  return (
+    <section className="block white spacious-block">
+      <div className="container centered-head">
+        <SectionLabel>Facilities</SectionLabel>
+        <h2 className="section-title display">Trivik Signature's Amenities</h2>
+        <p className="copy-lg max center-copy">Everyday comfort, family convenience and leisure experiences planned into one complete residential ecosystem.</p>
+      </div>
+      <div className="container amenity-preview-grid">
+        {amenities.map((item, i) => <div className="amenity-preview-card" key={item}><span>{["✦","▰","♙","◇","⌁","◌"][i]}</span><strong>{item}</strong></div>)}
+      </div>
+      <div className="container center-action"><Button to="/amenities" variant="dark">Explore Amenities</Button></div>
+    </section>
+  );
+}
+
+function TimelineSection() {
+  const steps = [
+    ["Done", "RERA Approval", "Regulatory approval secured"],
+    ["Ongoing", "Launch Phase", "Customer enquiries and bookings"],
+    ["Upcoming", "Construction Start", "Site execution milestones"],
+    ["Planned", "Structure Progress", "Tower-wise progress updates"],
+    ["RERA", "Possession", project.possession]
+  ];
+  return (
+    <section className="block navy timeline-section">
+      <div className="container centered-head dark-head">
+        <SectionLabel light>Project Timeline</SectionLabel>
+        <h2 className="section-title display">Follow the journey from vision to reality.</h2>
+      </div>
+      <div className="container timeline-row">
+        {steps.map(([status, title, text]) => <div className="timeline-step" key={title}><span className="timeline-dot">⌁</span><small>{status}</small><strong>{title}</strong><p>{text}</p></div>)}
+      </div>
+    </section>
+  );
+}
+
+function EmiCalculator() {
+  const [price, setPrice] = useState(18400000);
+  const [down, setDown] = useState(3680000);
+  const [rate, setRate] = useState(8.5);
+  const [years, setYears] = useState(20);
+  const loan = Math.max(price - down, 0);
+  const monthlyRate = rate / 12 / 100;
+  const months = years * 12;
+  const emi = monthlyRate > 0 ? loan * monthlyRate * Math.pow(1 + monthlyRate, months) / (Math.pow(1 + monthlyRate, months) - 1) : loan / months;
+  const inr = (n) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(Math.round(n || 0));
+  return (
+    <section className="block pearl spacious-block emi-section">
+      <div className="container emi-layout">
+        <div>
+          <SectionLabel>Home Loan Calculator</SectionLabel>
+          <h2 className="section-title display">Estimate your monthly EMI with clarity.</h2>
+          <p className="copy-lg">Plan your purchase better with a simple calculator. Final eligibility, interest rate and payment schedule are subject to bank approval and sales-team confirmation.</p>
+          <div className="emi-result"><span>Estimated Monthly EMI</span><strong>{inr(emi)}</strong><small>Loan amount: {inr(loan)}</small></div>
+        </div>
+        <div className="emi-card">
+          <label>Property Value<input type="number" value={price} onChange={e => setPrice(Number(e.target.value))} /></label>
+          <label>Down Payment<input type="number" value={down} onChange={e => setDown(Number(e.target.value))} /></label>
+          <div className="form-grid"><label>Interest Rate %<input type="number" step="0.1" value={rate} onChange={e => setRate(Number(e.target.value))} /></label><label>Tenure Years<input type="number" value={years} onChange={e => setYears(Number(e.target.value))} /></label></div>
+          <Button to="/contact" variant="dark">Get Exact Cost Sheet</Button>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -338,8 +362,6 @@ function Residences() {
           </div>
         </div>
       </section>
-      <LeadMagnetStrip compact />
-
       <section className="block white">
         <div className="container">
           <SectionLabel>Official Plan Reference</SectionLabel>
@@ -365,7 +387,7 @@ function Residences() {
               <h2 className="display floor-title">{home.title}</h2>
               <p className="lead">{home.copy}</p>
               <ul>{home.points.map(p => <li key={p}>◇ {p}</li>)}</ul>
-              <Button to="/contact" variant="gold">Download Full Floor Plan</Button>
+              <Button to="/contact" variant="gold">Request Official Plan</Button>
             </div>
           </div>
         </div>
@@ -416,7 +438,7 @@ function Contact() {
   };
   return (
     <>
-      <PageHero eyebrow="Private Preview" title="Receive the brochure, floor plans and" italic="availability details" copy="Choose what you need — current price sheet, floor plan, duplex availability or a private site visit — and our team will follow up directly." image={assets["entrance-gateway"]} />
+      <PageHero eyebrow="Private Preview" title="Receive the brochure, floor plans and" italic="availability details" copy="A direct enquiry journey connected to WhatsApp for immediate follow-up." image={assets["entrance-gateway"]} />
       <section className="block pearl">
         <div className="container split">
           <div>
@@ -428,9 +450,9 @@ function Contact() {
           <form onSubmit={submit} className="lead-form">
             <div className="form-grid"><label>Name<input required placeholder="Your name" /></label><label>Phone<input required placeholder="+91" /></label></div>
             <label>Email<input type="email" placeholder="you@example.com" /></label>
-            <label>Interested In<select><option>Get Current Price Sheet</option><option>Download 3 BHK Floor Plan</option><option>Check Duplex Availability</option><option>Book a Private Site Visit</option><option>Understand T20 / EMI Holiday Scheme</option></select></label>
+            <label>Interested In<select><option>3 BHK Signature Apartment</option><option>Premium Duplex Home</option><option>Trivik T20 Scheme</option><option>EMI Holiday Scheme</option><option>Site Visit</option></select></label>
             <label>Message<textarea rows="5" placeholder="Tell us your requirement" /></label>
-            <button className="btn dark" type="submit">Get Price Sheet & Book Site Visit</button>
+            <button className="btn dark" type="submit">Request Details</button>
           </form>
         </div>
       </section>
@@ -592,35 +614,30 @@ function PortalRows({ rows }) {
 
 function Footer() {
   return (
-    <footer>
-      <div className="container footer-grid">
-        <div><img src={assets.logo} alt="Trivik Signature logo" /><p>Building tomorrow's communities today — where every detail is crafted with purpose, elegance and enduring quality.</p></div>
-        <p>RERA: {project.rera}<br />{project.location}<br />This project is mortgaged and funded by Bajaj Housing Finance Limited. Final legal copy to be verified before launch.</p>
+    <footer className="premium-footer">
+      <div className="container footer-columns">
+        <div className="footer-brand"><img src={assets.logo} alt="Trivik Signature logo" /><p>Crafting refined residences built on design, trust and enduring value.</p><div className="social-row"><span>f</span><span>x</span><span>◎</span><span>▶</span></div></div>
+        <div><h3>Get In Touch</h3><p>{project.address}<br />Bengaluru, Karnataka</p><p><a href={project.phoneLink}>{project.phone}</a><br /><a href={`mailto:${project.email}`}>{project.email}</a></p></div>
+        <div><h3>Useful Links</h3><Link to="/about">About Us</Link><Link to="/residences">Our Projects</Link><Link to="/amenities">Gallery</Link><Link to="/contact">Contact Us</Link></div>
+        <div><h3>Explore</h3><Link to="/offers">Offers</Link><Link to="/amenities">Amenities</Link><Link to="/customer-login">Customer Login</Link><Link to="/contact">FAQ</Link></div>
       </div>
+      <div className="container newsletter-row"><strong>Newsletter To Get Updated The Latest News</strong><form><input placeholder="Enter your Email" /><button type="button">Subscribe ↗</button></form></div>
+      <div className="footer-bottom"><div className="container"><span>Copyright © 2026 Trivik Signature, All rights reserved.</span><span>Terms of service · Privacy policy · Cookies</span></div></div>
     </footer>
   );
 }
 
 function StickyCTA() {
-  return <div className="sticky-cta"><Link to="/contact">Price Sheet</Link><Link to="/residences">Floor Plan</Link><Link to="/contact">Site Visit</Link></div>;
+  return (
+    <>
+      <div className="floating-actions"><a className="whatsapp-float" href={project.whatsapp} aria-label="WhatsApp">☘</a><a className="call-float" href={project.phoneLink} aria-label="Call">☎</a></div>
+      <a className="scroll-top" href="#top" aria-label="Back to top">↑</a>
+      <div className="sticky-cta"><a href={project.phoneLink}>Call</a><a href={project.whatsapp}>WhatsApp</a><Link to="/contact">Brochure</Link></div>
+    </>
+  );
 }
 
 function App() {
-  useEffect(() => {
-    const nodes = document.querySelectorAll(".block, .image-tile, .info-card, .preview-image, .portal-card, .offer-card, .fact, .lead-magnet-card, .cinematic-frame");
-    nodes.forEach((node) => node.classList.add("reveal"));
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12 });
-    nodes.forEach((node) => observer.observe(node));
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <>
       <Header />
