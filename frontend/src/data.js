@@ -98,7 +98,7 @@ export const approvals = [
   {
     title: "STRR Connectivity",
     subtitle: "Regional access advantage",
-    text: "A premium location benefit for future-forward connectivity and long-term convenience.",
+    text: "A simple location-led connectivity marker for East Bengaluru's growth corridor.",
     value: "Strategic growth corridor",
     kind: "badge"
   }
@@ -225,24 +225,34 @@ export const amenityCategories = [
 
 export const journeySteps = [
   {
-    title: "RERA approved",
+    title: "RERA Approved",
     status: "active",
-    text: "The first visible marker of customer trust and project legitimacy.",
+    stage: "Completed",
+    text: "Regulatory approval secured and project registration visible for buyer confidence."
   },
   {
-    title: "Construction progress",
+    title: "Construction Started",
     status: "blur",
-    text: "Civil structure, services and finishing milestones will follow in sequence."
+    stage: "Upcoming",
+    text: "Initial construction milestone to be updated after official project progress."
   },
   {
-    title: "Quality handover",
+    title: "Structure Progress",
     status: "blur",
-    text: "A carefully documented transition from construction to delivery."
+    stage: "Upcoming",
+    text: "Tower progress and structural milestones will be shared as development advances."
   },
   {
-    title: "Community life",
+    title: "OC & CC Received",
     status: "blur",
-    text: "The final outcome: a composed, livable and premium residential environment."
+    stage: "Upcoming",
+    text: "Occupancy and completion clearances will be updated once applicable."
+  },
+  {
+    title: "Possession Handover",
+    status: "blur",
+    stage: "Upcoming",
+    text: "Final handover milestone after construction, inspections and documentation."
   }
 ];
 
@@ -272,4 +282,3 @@ export const staff = [
   ["Shireesha Lakshmi", "Sales Executive"],
   ["Radha R.", "Sales Co-ordinator"]
 ];
-
