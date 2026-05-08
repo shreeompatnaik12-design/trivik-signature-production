@@ -1,4 +1,3 @@
-
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
@@ -12,11 +11,58 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8080;
 const JWT_SECRET = process.env.JWT_SECRET || "development-only-secret-change-this";
-const CORS_ORIGIN = process.env.CORS_ORIGIN || "http://localhost:5173";
+
+/*
+  CORS FIX:
+  - Allows your current Cloudflare Pages website.
+  - Allows any *.pages.dev preview URL.
+  - Allows localhost for testing.
+  - Also respects CORS_ORIGIN from Render if you set it.
+*/
+const defaultAllowedOrigins = [
+  "https://trivik-signature-production.pages.dev",
+  "https://whimsical-treacle-9484a9.netlify.app",
+  "http://localhost:5173",
+  "http://localhost:8080"
+];
+
+const envAllowedOrigins = (process.env.CORS_ORIGIN || "")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+const allowedOrigins = new Set([...defaultAllowedOrigins, ...envAllowedOrigins]);
+
+function isAllowedOrigin(origin) {
+  if (!origin) return true;
+  if (allowedOrigins.has(origin)) return true;
+
+  try {
+    const url = new URL(origin);
+    if (url.hostname.endsWith(".pages.dev")) return true;
+    if (url.hostname.endsWith(".netlify.app")) return true;
+  } catch {
+    return false;
+  }
+
+  return false;
+}
 
 app.use(helmet());
 app.use(express.json());
-app.use(cors({ origin: CORS_ORIGIN, credentials: true }));
+
+app.use(cors({
+  origin(origin, callback) {
+    if (isAllowedOrigin(origin)) return callback(null, true);
+    return callback(new Error(`CORS blocked origin: ${origin}`));
+  },
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: false
+}));
+
+app.options("*", cors());
+
 app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 100 }));
 
 const demoEmail = (process.env.DEMO_EMAIL || "john.doe@gmail.com").toLowerCase();
@@ -95,8 +141,16 @@ function requireAuth(req, res, next) {
   }
 }
 
+app.get("/", (_req, res) => {
+  res.json({ ok: true, service: "Trivik Signature Portal API", health: "/api/health" });
+});
+
 app.get("/api/health", (_req, res) => {
-  res.json({ ok: true, service: "Trivik Signature Portal API" });
+  res.json({
+    ok: true,
+    service: "Trivik Signature Portal API",
+    allowedOrigins: Array.from(allowedOrigins)
+  });
 });
 
 app.post("/api/auth/login", async (req, res) => {
@@ -123,8 +177,7 @@ app.get("/api/customer/me", requireAuth, (req, res) => {
   res.json(customerRecord);
 });
 
-app.post("/api/contact", (req, res) => {
-  // Production version: send to CRM, Google Sheet, email, WhatsApp API, etc.
+app.post("/api/contact", (_req, res) => {
   res.json({ ok: true, message: "Lead received" });
 });
 
