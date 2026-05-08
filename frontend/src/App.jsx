@@ -17,7 +17,7 @@ import {
 } from "./data";
 import "./styles.css";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8080";
+const API_BASE = (import.meta.env.VITE_API_URL || "https://trivik-signature-backend.onrender.com").replace(/\/$/, "");
 
 function ScrollToTop() {
   const { pathname } = useLocation();
