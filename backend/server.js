@@ -1,79 +1,59 @@
 import express from "express";
 import cors from "cors";
-import helmet from "helmet";
-import rateLimit from "express-rate-limit";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 8080;
-const JWT_SECRET = process.env.JWT_SECRET || "development-only-secret-change-this";
+const JWT_SECRET = process.env.JWT_SECRET || "trivik-demo-secret-change-later";
 
-/*
-  CORS FIX:
-  - Allows your current Cloudflare Pages website.
-  - Allows any *.pages.dev preview URL.
-  - Allows localhost for testing.
-  - Also respects CORS_ORIGIN from Render if you set it.
-*/
-const defaultAllowedOrigins = [
-  "https://trivik-signature-production.pages.dev",
+const FRONTEND_URL = "https://trivik-signature-production.pages.dev";
+
+const allowedOrigins = [
+  FRONTEND_URL,
   "https://whimsical-treacle-9484a9.netlify.app",
   "http://localhost:5173",
-  "http://localhost:8080"
+  ...(process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(",").map((x) => x.trim()).filter(Boolean) : [])
 ];
 
-const envAllowedOrigins = (process.env.CORS_ORIGIN || "")
-  .split(",")
-  .map((origin) => origin.trim())
-  .filter(Boolean);
-
-const allowedOrigins = new Set([...defaultAllowedOrigins, ...envAllowedOrigins]);
-
-function isAllowedOrigin(origin) {
-  if (!origin) return true;
-  if (allowedOrigins.has(origin)) return true;
+function corsOrigin(origin, callback) {
+  if (!origin) return callback(null, true);
 
   try {
-    const url = new URL(origin);
-    if (url.hostname.endsWith(".pages.dev")) return true;
-    if (url.hostname.endsWith(".netlify.app")) return true;
+    const host = new URL(origin).hostname;
+
+    if (
+      allowedOrigins.includes(origin) ||
+      host.endsWith(".pages.dev") ||
+      host.endsWith(".netlify.app")
+    ) {
+      return callback(null, true);
+    }
   } catch {
-    return false;
+    // ignore malformed origins
   }
 
-  return false;
+  return callback(new Error(`Blocked by CORS: ${origin}`));
 }
 
-app.use(helmet());
 app.use(express.json());
 
 app.use(cors({
-  origin(origin, callback) {
-    if (isAllowedOrigin(origin)) return callback(null, true);
-    return callback(new Error(`CORS blocked origin: ${origin}`));
-  },
+  origin: corsOrigin,
   methods: ["GET", "POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: false
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-app.options("*", cors());
-
-app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 100 }));
-
-const demoEmail = (process.env.DEMO_EMAIL || "john.doe@gmail.com").toLowerCase();
-const demoPassword = process.env.DEMO_PASSWORD || "johndoe";
-const passwordHash = bcrypt.hashSync(demoPassword, 10);
+const DEMO_EMAIL = "john.doe@gmail.com";
+const DEMO_PASSWORD = "johndoe";
 
 const customerRecord = {
   customer: {
     id: "TS-2026-0142",
     name: "John Doe",
-    email: demoEmail,
+    email: DEMO_EMAIL,
     phone: "+91 90000 00000"
   },
   flat: {
@@ -100,9 +80,27 @@ const customerRecord = {
     nextDueDate: "15 August 2026",
     plan: "Trivik T20 Scheme",
     history: [
-      { date: "18 May 2026", description: "Booking Amount", mode: "Bank Transfer", receipt: "TS-R-1024", amount: "₹5,00,000" },
-      { date: "25 May 2026", description: "Initial Down Payment", mode: "RTGS", receipt: "TS-R-1088", amount: "₹21,80,000" },
-      { date: "10 June 2026", description: "T20 Scheme Balance", mode: "NEFT", receipt: "TS-R-1162", amount: "₹10,00,000" }
+      {
+        date: "18 May 2026",
+        description: "Booking Amount",
+        mode: "Bank Transfer",
+        receipt: "TS-R-1024",
+        amount: "₹5,00,000"
+      },
+      {
+        date: "25 May 2026",
+        description: "Initial Down Payment",
+        mode: "RTGS",
+        receipt: "TS-R-1088",
+        amount: "₹21,80,000"
+      },
+      {
+        date: "10 June 2026",
+        description: "T20 Scheme Balance",
+        mode: "NEFT",
+        receipt: "TS-R-1162",
+        amount: "₹10,00,000"
+      }
     ]
   },
   dues: {
@@ -124,57 +122,62 @@ const customerRecord = {
   ]
 };
 
-function createToken(email) {
+function makeToken(email) {
   return jwt.sign({ email }, JWT_SECRET, { expiresIn: "8h" });
 }
 
 function requireAuth(req, res, next) {
-  const header = req.headers.authorization || "";
-  const token = header.startsWith("Bearer ") ? header.slice(7) : null;
-  if (!token) return res.status(401).json({ message: "Missing token" });
+  const authHeader = req.headers.authorization || "";
+  const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
+
+  if (!token) {
+    return res.status(401).json({ message: "Missing token" });
+  }
 
   try {
     req.user = jwt.verify(token, JWT_SECRET);
-    next();
+    return next();
   } catch {
     return res.status(401).json({ message: "Invalid or expired token" });
   }
 }
 
 app.get("/", (_req, res) => {
-  res.json({ ok: true, service: "Trivik Signature Portal API", health: "/api/health" });
+  res.json({
+    ok: true,
+    service: "Trivik Signature Portal API",
+    health: "/api/health"
+  });
 });
 
 app.get("/api/health", (_req, res) => {
   res.json({
     ok: true,
     service: "Trivik Signature Portal API",
-    allowedOrigins: Array.from(allowedOrigins)
+    frontend: FRONTEND_URL
   });
 });
 
-app.post("/api/auth/login", async (req, res) => {
+app.post("/api/auth/login", (req, res) => {
   const email = String(req.body.email || "").trim().toLowerCase();
   const password = String(req.body.password || "");
 
-  const emailMatches = email === demoEmail;
-  const passwordMatches = await bcrypt.compare(password, passwordHash);
-
-  if (!emailMatches || !passwordMatches) {
+  if (email !== DEMO_EMAIL || password !== DEMO_PASSWORD) {
     return res.status(401).json({ message: "Invalid email or password" });
   }
 
-  res.json({
-    token: createToken(email),
+  return res.json({
+    token: makeToken(email),
     customer: customerRecord.customer
   });
 });
 
 app.get("/api/customer/me", requireAuth, (req, res) => {
-  if (req.user.email !== demoEmail) {
+  if (req.user.email !== DEMO_EMAIL) {
     return res.status(403).json({ message: "Not allowed" });
   }
-  res.json(customerRecord);
+
+  return res.json(customerRecord);
 });
 
 app.post("/api/contact", (_req, res) => {
@@ -182,5 +185,5 @@ app.post("/api/contact", (_req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Trivik Signature portal API running on port ${PORT}`);
+  console.log(`Trivik Signature backend running on port ${PORT}`);
 });
