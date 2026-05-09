@@ -31,11 +31,27 @@ export const project = {
   whatsapp: "https://wa.me/917338552666?text=Hi%2C%20I%20am%20interested%20in%20Trivik%20Signature.%20Please%20share%20the%20brochure%2C%20price%20sheet%20and%20available%20units.",
   email: "crm@triviksignature.in",
   website: "www.triviksignature.in",
-  address: "Sy. No. 94/1, T-Cross, Soukya Road, Samethanahalli, East Bengaluru",
-  location: "Soukya Road, Samethanahalli, East Bengaluru",
+  address: "Sy. No. 94/1, T-Cross, Soukya Road, Samethanahalli, Whitefield, East Bangalore",
+  location: "Whitefield, East Bangalore",
   rera: "PRM/KA/RERA/1250/304/PR/260226/008490",
-  possession: "December 2031 expected"
+  possession: "December 2031"
 };
+
+
+export const heroSlides = [
+  assets.hero,
+  assets.entrance,
+  assets.aerial,
+  assets.clubhouse,
+  assets.front,
+  assets.full,
+  assets.landscape,
+  assets.side,
+  assets.amenityClubhouse,
+  assets.amenityButterfly,
+  assets.amenityPalm,
+  assets.amenityPlay
+];
 
 export const stats = [
   ["408", "Premium residences"],
@@ -45,14 +61,14 @@ export const stats = [
 ];
 
 export const facts = [
-  ["Project Type", "Premium Residential Apartments & Duplex Homes"],
+  ["Project Type", "Premium Residential Apartments"],
   ["Developer", "Trivik Signature"],
   ["Configuration", "3 BHK Apartments & Duplex Homes"],
   ["Size Range", "1,650 – 3,624 sq. ft."],
   ["Total Units", "408 Apartments"],
   ["Project Area", "6.34 Acres"],
-  ["Possession", "December 2031 expected"],
-  ["RERA", "PRM/KA/RERA/1250/304/PR/260226/008490"]
+  ["Open Space", "70%"],
+  ["Possession", "December 2031"]
 ];
 
 export const residences = [
@@ -85,22 +101,22 @@ export const whyUs = [
   {
     icon: "shield",
     title: "Trust-led development",
-    text: "RERA registered planning, transparent communication and clear customer-facing documentation."
+    text: "Built on clear approvals, transparent communication and a customer-first commitment at every stage."
   },
   {
     icon: "location",
-    title: "East Bengaluru address",
-    text: "A growing residential corridor with access to Whitefield, Soukya Road and surrounding employment zones."
+    title: "Whitefield advantage",
+    text: "A refined East Bangalore address positioned around Whitefield’s growth, connectivity and residential demand."
   },
   {
     icon: "design",
-    title: "Thoughtful planning",
-    text: "Spacious homes, practical circulation, natural light and amenities planned around everyday use."
+    title: "Signature design language",
+    text: "A composed material palette, efficient planning and homes shaped around light, privacy and everyday elegance."
   },
   {
     icon: "leaf",
-    title: "Lifestyle depth",
-    text: "Clubhouse, landscaped courts, sport zones and family spaces that extend life beyond the apartment."
+    title: "70% open space",
+    text: "Open sky, lush greens and breathing space define the lifestyle — because luxury begins outside your door."
   }
 ];
 
@@ -134,15 +150,13 @@ export const milestones = [
 
 export const offerSchemes = [
   {
-    badge: "Trivik T20 Scheme",
-    title: "Pay 20%, relax for 20 months",
-    points: ["Secure your home with 20% upfront", "Enjoy a payment-free window for 20 months", "Designed for flexible ownership planning"],
-    tone: "navy"
-  },
-  {
-    badge: "EMI Holiday Scheme",
-    title: "Pay 20%, no EMI for 25 months",
-    points: ["Book with a 20% initial outflow", "Enjoy a 25-month EMI holiday period", "Plan your finances with more control"],
+    badge: "Signature Launch Offer",
+    title: "Pay 20% Now. Nothing for the Next 36 Months.",
+    points: [
+      "Secure your Trivik Signature home with 20% now",
+      "No further payment for the next 36 months",
+      "A rare ownership window designed for confident early buyers"
+    ],
     tone: "sand"
   }
 ];
