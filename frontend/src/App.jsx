@@ -80,8 +80,7 @@ function Header() {
     <header className="site-header">
       <div className="container nav">
         <Link to="/" className="brand" aria-label="Trivik Signature home">
-          <img src={assets.logo} alt="Trivik Signature logo" />
-          <span>Whitefield</span>
+          <img src={assets.logo} alt="Trivik Signature Whitefield logo" />
         </Link>
         <nav className="nav-links">
           {nav.map(([label, path]) => <NavLink key={path} to={path}>{label}</NavLink>)}
