@@ -5,6 +5,7 @@ import {
   amenityHighlights,
   assets,
   facts,
+  heroSlides,
   milestones,
   offerSchemes,
   partners,
@@ -79,6 +80,7 @@ function Header() {
       <div className="container nav">
         <Link to="/" className="brand" aria-label="Trivik Signature home">
           <img src={assets.logo} alt="Trivik Signature logo" />
+          <span>Whitefield</span>
         </Link>
         <nav className="nav-links">
           {nav.map(([label, path]) => <NavLink key={path} to={path}>{label}</NavLink>)}
@@ -181,33 +183,47 @@ function OfferCard({ item }) {
 
 function Home() {
   const amenityPreview = useMemo(() => amenityHighlights.slice(0, 6), []);
+  const [slideIndex, setSlideIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setSlideIndex((current) => (current + 1) % heroSlides.length);
+    }, 4200);
+    return () => window.clearInterval(timer);
+  }, []);
+
   return (
     <>
-      <section className="hero">
-        <img className="hero-bg" src={assets.hero} alt="Trivik Signature entrance approach" />
+      <section className="hero cinematic-hero">
+        {heroSlides.map((image, index) => (
+          <img
+            key={image}
+            className={`hero-bg hero-slide ${index === slideIndex ? "active" : ""}`}
+            src={image}
+            alt=""
+            loading={index === 0 ? "eager" : "lazy"}
+          />
+        ))}
         <div className="hero-overlay" />
-        <div className="container hero-grid">
-          <div className="hero-copy">
-            <div className="eyebrow">Soukya Road · Samethanahalli · East Bengaluru</div>
+        <div className="hero-slider-dots">
+          {heroSlides.slice(0, 6).map((_, index) => (
+            <span key={index} className={index === slideIndex % 6 ? "active" : ""} />
+          ))}
+        </div>
+        <div className="container hero-corners">
+          <div className="hero-corner hero-corner-left">
+            <div className="eyebrow">Trivik Signature · Whitefield</div>
             <h1 className="display">The Art of <em>Elevated</em> Living</h1>
-            <p className="lead">Welcome to Trivik Signature — where modern architecture meets an elevated way of life. A community of 408 premium residences across 3 stunning towers, designed for those who value quality, comfort and refined everyday living.</p>
             <div className="hero-actions">
               <Button to="/contact" variant="gold">Get Current Price Sheet</Button>
               <Button to="/residences" variant="outline">View Floor Plans</Button>
             </div>
           </div>
-          <aside className="snapshot reveal">
-            <p className="tiny-title">Project Snapshot</p>
-            <h2 className="display">Trivik Signature</h2>
-            <div className="stats">
-              {stats.map(([value, label]) => <Stat key={label} value={value} label={label} />)}
-            </div>
-            <div className="snapshot-lines">
-              <div><span>Configuration</span><strong>3 BHK apartments & duplex homes</strong></div>
-              <div><span>Size range</span><strong>1,650 – 3,624 sq. ft.</strong></div>
-              <div><span>RERA</span><strong>{project.rera}</strong></div>
-            </div>
-          </aside>
+          <div className="hero-corner hero-corner-right">
+            <span className="tiny-title">Come Home to Nature and Luxury</span>
+            <h2 className="display">70% Open Space</h2>
+            <p>Where your world opens to sky, green and breathing space — because luxury begins outside your door.</p>
+          </div>
         </div>
       </section>
 
@@ -215,10 +231,10 @@ function Home() {
         <div className="container split">
           <div>
             <SectionLabel>Welcome to Trivik</SectionLabel>
-            <h2 className="section-title display">This is not just a home. This is your signature address.</h2>
+            <h2 className="section-title display">This isn't just a home. It's your signature address.</h2>
           </div>
           <div>
-            <p className="copy-lg">Every corner of Trivik Signature has been conceived with one purpose: to give you a life that is as beautiful as it is fulfilling. Thoughtfully designed living spaces, curated amenities, legal transparency and refined architecture come together in one composed residential experience.</p>
+            <p className="copy-lg">A statement of who you are — shaped by refined architecture, thoughtful amenities and 70% open space. Come home to nature. Come home to luxury. Come home to Trivik Signature.</p>
             <Button to="/about" variant="dark">Know the Brand</Button>
           </div>
         </div>
@@ -226,24 +242,22 @@ function Home() {
 
       <section className="block white">
         <div className="container">
-          <SectionLabel>Trust & Compliance</SectionLabel>
+          <SectionLabel>Nature & Luxury</SectionLabel>
           <div className="trust-layout">
             <div>
-              <h2 className="section-title display">Confidence before commitment.</h2>
-              <p className="copy-lg">Clear approvals, transparent documentation and direct buyer communication form the foundation of the Trivik Signature experience.</p>
+              <h2 className="section-title display">Where open space becomes the first luxury.</h2>
+              <p className="copy-lg">At Trivik Signature, 70% of the community is planned as open space — creating a calmer, greener and more breathable way to live in Whitefield.</p>
             </div>
             <div className="trust-cards">
-              <div className="rera-card reveal">
-                <img src={assets.reraLogo} alt="RERA Approved" />
-                <div>
-                  <small>RERA Approved</small>
-                  <strong>{project.rera}</strong>
-                </div>
+              <div className="subtle-card reveal feature-card-large">
+                <small>70% Open Space</small>
+                <strong>Open sky, landscaped greens and breathing space outside your door.</strong>
+                <p>Because true luxury is not only what is built, but what is thoughtfully left open.</p>
               </div>
               <div className="subtle-card reveal">
-                <small>Connectivity Advantage</small>
-                <strong>East Bengaluru growth corridor</strong>
-                <p>Positioned around Soukya Road, Samethanahalli and the Whitefield growth belt.</p>
+                <small>Signature Address</small>
+                <strong>Come Home to Nature and Luxury</strong>
+                <p>A composed residential environment created for families who value calm, comfort and long-term pride of ownership.</p>
               </div>
             </div>
           </div>
@@ -265,9 +279,9 @@ function Home() {
           <div className="section-head">
             <div>
               <SectionLabel>Visual Showcase</SectionLabel>
-              <h2 className="section-title display">A closer look at the spaces that define the community.</h2>
+              <h2 className="section-title display">A cinematic glimpse of your signature address.</h2>
             </div>
-            <p className="copy-lg">From arrival to architecture, each frame offers a quieter view of the lifestyle and scale of Trivik Signature.</p>
+            <p className="copy-lg">From arrival to landscaped experiences, every frame is designed to feel calm, green and quietly premium.</p>
           </div>
           <div className="visual-grid">
             {visualShowcase.map(([title, tag, image]) => <VisualCard key={title} title={title} tag={tag} image={image} />)}
@@ -277,8 +291,8 @@ function Home() {
 
       <PreviewSection
         eyebrow="Residences"
-        title="Spacious 3 BHK homes and limited duplex residences."
-        copy="Explore residences ranging from 1,650 to 3,624 sq. ft., with smart space planning, natural light, cross ventilation, private balconies and a clear distinction between apartment and duplex living."
+        title="Residences designed around space, light and distinction."
+        copy="This isn't just a home. It's your signature address — planned for comfort, crafted for privacy and surrounded by a community where nature and luxury meet."
         image={assets.floorPlans}
         to="/residences"
         cta="Explore Residences"
@@ -290,9 +304,9 @@ function Home() {
           <div className="section-head">
             <div>
               <SectionLabel>Amenities</SectionLabel>
-              <h2 className="section-title display">Lifestyle spaces planned with purpose.</h2>
+              <h2 className="section-title display">Come home to nature. Come home to luxury.</h2>
             </div>
-            <p className="copy-lg">A curated mix of social, wellness, family and sports amenities gives residents more reasons to spend time within the community.</p>
+            <p className="copy-lg">From landscaped courts to family-friendly zones, every amenity is designed to make everyday life feel more open, active and complete.</p>
           </div>
           <div className="amenity-preview-grid">
             {amenityPreview.map(([title, tag, image]) => <AmenityTile key={title} title={title} tag={tag} image={image} />)}
@@ -323,8 +337,8 @@ function Home() {
           </div>
           <div>
             <SectionLabel light>Flexible Schemes</SectionLabel>
-            <h2 className="section-title display">Structured ownership options for premium living.</h2>
-            <p className="copy-lg light-copy">Choose from payment schemes designed to give buyers more breathing room while securing a premium residence at Trivik Signature.</p>
+            <h2 className="section-title display">Pay 20% now. Nothing for the next 36 months.</h2>
+            <p className="copy-lg light-copy">A bold ownership window for buyers who want to secure a premium Whitefield home today while planning their finances with greater ease.</p>
             <div className="offer-grid small">
               {offerSchemes.map((item) => <OfferCard key={item.badge} item={item} />)}
             </div>
@@ -372,9 +386,9 @@ function About() {
         <div className="container split">
           <div>
             <SectionLabel>About Us</SectionLabel>
-            <h2 className="section-title display">We do not just build homes — we craft environments.</h2>
+            <h2 className="section-title display">Integrity, innovation and excellence — crafted into every home.</h2>
           </div>
-          <p className="copy-lg">Founded in 2024, Trivik Signature is a premier real estate development firm built on the pillars of integrity, innovation and excellence. Spread across a thoughtfully planned community featuring 3 iconic towers and 408 luxurious residences, we are committed to redefining the idea of urban living with legal transparency and peace of mind for every homeowner.</p>
+          <p className="copy-lg">Trivik Signature is a premier real estate development firm built on a foundation of integrity, innovation, and excellence. Founded in 2024, Trivik Signature is led by founders who each bring a minimum of 15 years of hands-on experience in the real estate industry — united by a singular vision: to craft homes that are as meaningful as they are magnificent.</p>
         </div>
       </section>
       <section className="block white">
@@ -525,16 +539,12 @@ function Contact() {
             <SectionLabel>Contact Information</SectionLabel>
             <h2 className="section-title display">Let us arrange the next step.</h2>
             <div className="contact-card reveal">
-              <p><strong>Phone</strong><span>{project.phone}</span></p>
+              <p><strong>Phone / WhatsApp</strong><span className="contact-phone-row"><PhoneIcon /> <a href={project.phoneLink}>{project.phone}</a> <a className="whatsapp-mini" href={project.whatsapp} target="_blank" rel="noreferrer"><WhatsappIcon /> WhatsApp</a></span></p>
               <p><strong>Email</strong><span>{project.email}</span></p>
               <p><strong>Website</strong><span>{project.website}</span></p>
               <p><strong>Address</strong><span>{project.address}</span></p>
             </div>
-            <div className="contact-trust">
-              <div className="rera-mini">
-                <img src={assets.reraLogo} alt="RERA Approved" />
-                <div><small>RERA Registration</small><strong>{project.rera}</strong></div>
-              </div>
+            <div className="contact-trust single">
               <div className="funding-mini">
                 <small>Funding Disclosure</small>
                 <strong>Mortgaged & funded by Bajaj Housing Finance Limited</strong>
@@ -724,6 +734,24 @@ function PortalRows({ rows }) {
   return <div className="portal-list">{rows.map(([a, b]) => <div className="portal-row" key={`${a}-${b}`}><span>{a}</span><strong>{b}</strong></div>)}</div>;
 }
 
+
+function PhoneIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M6.7 3.8l2.1-.9c.7-.3 1.5 0 1.8.7l1.1 2.6c.3.6.1 1.3-.4 1.7l-1.2 1c.9 1.9 2.4 3.4 4.2 4.2l1-.9c.5-.5 1.2-.6 1.8-.3l2.5 1.1c.7.3 1 1.1.8 1.8l-.8 2.2c-.3.8-1 1.3-1.8 1.3C10.7 18 6 13.3 6 6.2c0-.8.3-1.5.7-2.4z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+
+function WhatsappIcon() {
+  return (
+    <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <path d="M16 3.5C9.1 3.5 3.6 8.9 3.6 15.6c0 2.2.6 4.3 1.7 6.1L4 28.5l7-1.8c1.6.8 3.3 1.2 5.1 1.2 6.8 0 12.3-5.4 12.3-12.1S22.8 3.5 16 3.5z" fill="currentColor"/>
+      <path d="M22.9 19.2c-.3.9-1.7 1.7-2.4 1.8-.6.1-1.4.2-4.7-1.2-4-1.7-6.6-5.8-6.8-6.1-.2-.3-1.6-2.1-1.6-4 0-1.9 1-2.8 1.3-3.2.3-.4.7-.5 1-.5h.7c.2 0 .5 0 .8.6.3.7 1 2.5 1.1 2.7.1.2.2.5 0 .8-.2.3-.3.5-.6.8-.3.3-.5.6-.2 1.1.3.5 1.1 1.8 2.4 2.9 1.7 1.5 3 1.9 3.5 2.1.4.2.7.2.9-.1.3-.3 1-1.2 1.3-1.6.3-.4.6-.3.9-.2.4.1 2.3 1.1 2.7 1.3.4.2.6.3.7.5.1.2.1 1.1-.2 2z" fill="white"/>
+    </svg>
+  );
+}
+
 function Footer() {
   return (
     <footer className="site-footer">
@@ -733,7 +761,7 @@ function Footer() {
           <p>Building tomorrow's communities today — where every detail is crafted with purpose, elegance and enduring quality.</p>
         </div>
         <p>{project.phone}<br />{project.email}<br />{project.address}</p>
-        <p>RERA: {project.rera}<br />Mortgaged & funded by Bajaj Housing Finance Limited.</p>
+        <p>Legal: RERA {project.rera}<br />Mortgaged & funded by Bajaj Housing Finance Limited.</p>
       </div>
     </footer>
   );
@@ -742,8 +770,8 @@ function Footer() {
 function FloatingContactRail() {
   return (
     <div className="floating-rail">
-      <a href={project.whatsapp} target="_blank" rel="noreferrer" aria-label="WhatsApp">WA</a>
-      <a href={project.phoneLink} aria-label="Call">☎</a>
+      <a href={project.whatsapp} target="_blank" rel="noreferrer" aria-label="WhatsApp"><WhatsappIcon /></a>
+      <a href={project.phoneLink} aria-label="Call"><PhoneIcon /></a>
     </div>
   );
 }
