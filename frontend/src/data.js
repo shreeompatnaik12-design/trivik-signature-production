@@ -10,6 +10,10 @@ export const assets = {
   logo: "/assets/trivik-logo-blue.png",
   logoWhite: "/assets/trivik-logo-white.png",
   floorPlans: "/assets/floor-plans.webp",
+  blockPlanFull: "/assets/block-plan-full.webp",
+  blockPlan3Bhk: "/assets/block-plan-3bhk.webp",
+  blockPlanDuplex1: "/assets/block-plan-duplex-level-1.webp",
+  blockPlanDuplex2: "/assets/block-plan-duplex-level-2.webp",
   reraLogo: "/assets/rera-approved.png",
   amenityClubhouse: "/assets/amenity-clubhouse.jpg",
   amenityAmphitheatre: "/assets/amenity-amphitheatre.jpg",
@@ -26,10 +30,10 @@ export const assets = {
 
 export const project = {
   name: "Trivik Signature",
-  phone: "+91 73385 52666",
-  phoneLink: "tel:+917338552666",
-  whatsapp: "https://wa.me/917338552666?text=Hi%2C%20I%20am%20interested%20in%20Trivik%20Signature.%20Please%20share%20the%20brochure%2C%20price%20sheet%20and%20available%20units.",
-  email: "crm@triviksignature.in",
+  phone: "+91 90710 79577",
+  phoneLink: "tel:+919071079577",
+  whatsapp: "https://wa.me/919071079577?text=Hi%2C%20I%20am%20interested%20in%20Trivik%20Signature.%20Please%20share%20the%20brochure%2C%20price%20sheet%20and%20available%20units.",
+  email: "info@triviksignature.in",
   website: "www.triviksignature.in",
   address: "Sy. No. 94/1, T-Cross, Soukya Road, Samethanahalli, Whitefield, East Bangalore",
   location: "Whitefield, East Bangalore",
@@ -48,9 +52,16 @@ export const heroSlides = [
   assets.landscape,
   assets.side,
   assets.amenityClubhouse,
+  assets.amenityAmphitheatre,
   assets.amenityButterfly,
   assets.amenityPalm,
-  assets.amenityPlay
+  assets.amenityPlay,
+  assets.amenityTennis,
+  assets.amenityBasketball,
+  assets.amenityCricket,
+  assets.amenityBanyan,
+  assets.amenityShuttle,
+  assets.amenityJogging
 ];
 
 export const stats = [
@@ -69,6 +80,28 @@ export const facts = [
   ["Project Area", "6.34 Acres"],
   ["Open Space", "70%"],
   ["Possession", "December 2031"]
+];
+
+
+export const blockPlans = [
+  {
+    title: "Typical 3 BHK Floor Plan",
+    label: "Normal Residence",
+    image: assets.blockPlan3Bhk,
+    copy: "A clear typical-floor block reference for the standard 3 BHK residence layout."
+  },
+  {
+    title: "Duplex First Level Plan",
+    label: "Duplex Residence",
+    image: assets.blockPlanDuplex1,
+    copy: "The first level of the duplex block plan, designed around larger family living and functional circulation."
+  },
+  {
+    title: "Duplex Second Level Plan",
+    label: "Upper Level",
+    image: assets.blockPlanDuplex2,
+    copy: "The second level of the duplex block plan, showcasing the upper private zone."
+  }
 ];
 
 export const residences = [
