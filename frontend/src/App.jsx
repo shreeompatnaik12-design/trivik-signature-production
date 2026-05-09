@@ -210,19 +210,14 @@ function Home() {
             <span key={index} className={index === slideIndex % 6 ? "active" : ""} />
           ))}
         </div>
-        <div className="container hero-corners">
+        <div className="container hero-corners hero-single">
           <div className="hero-corner hero-corner-left">
-            <div className="eyebrow">Trivik Signature · Whitefield</div>
-            <h1 className="display">The Art of <em>Elevated</em> Living</h1>
+            <h1 className="display">Come home to <em>nature</em> and luxury.</h1>
+            <p className="hero-subline">With 70% open space, your world opens up to sky, green and breathing space — because luxury begins outside your door.</p>
             <div className="hero-actions">
               <Button to="/contact" variant="gold">Get Current Price Sheet</Button>
               <Button to="/residences" variant="outline">View Floor Plans</Button>
             </div>
-          </div>
-          <div className="hero-corner hero-corner-right">
-            <span className="tiny-title">Come Home to Nature and Luxury</span>
-            <h2 className="display">70% Open Space</h2>
-            <p>Where your world opens to sky, green and breathing space — because luxury begins outside your door.</p>
           </div>
         </div>
       </section>
@@ -381,14 +376,14 @@ function PreviewSection({ eyebrow, title, copy, image, to, cta, reverse = false,
 function About() {
   return (
     <>
-      <PageHero eyebrow="About Trivik" title="A premier real estate development firm built on" italic="integrity" copy="Founded in 2024, Trivik Signature is built on the pillars of integrity, innovation and excellence." image={assets.front} />
+      <PageHero eyebrow="About Trivik" title="A premier real estate development firm built on" italic="integrity" copy="The journey began taking shape in 2024, Trivik Signature is built on the pillars of integrity, innovation and excellence." image={assets.front} />
       <section className="block pearl">
         <div className="container split">
           <div>
             <SectionLabel>About Us</SectionLabel>
             <h2 className="section-title display">Integrity, innovation and excellence — crafted into every home.</h2>
           </div>
-          <p className="copy-lg">Trivik Signature is a premier real estate development firm built on a foundation of integrity, innovation, and excellence. Founded in 2024, Trivik Signature is led by founders who each bring a minimum of 15 years of hands-on experience in the real estate industry — united by a singular vision: to craft homes that are as meaningful as they are magnificent.</p>
+          <p className="copy-lg">Trivik Signature is a premier real estate development firm built on a foundation of integrity, innovation, and excellence. The pillars of this journey began taking shape in 2024, led by founders who each bring a minimum of 15 years of hands-on experience in the real estate industry — united by a singular vision: to craft homes that are as meaningful as they are magnificent.</p>
         </div>
       </section>
       <section className="block white">
