@@ -7,7 +7,7 @@ export const assets = {
   full: "/assets/full-view.webp",
   landscape: "/assets/landscape-view.webp",
   side: "/assets/side-view.webp",
-  logo: "/assets/trivik-logo-blue.png",
+  logo: "/assets/trivik-logo-whitefield.webp",
   logoWhite: "/assets/trivik-logo-white.png",
   floorPlans: "/assets/floor-plans.webp",
   blockPlanFull: "/assets/block-plan-full.webp",
