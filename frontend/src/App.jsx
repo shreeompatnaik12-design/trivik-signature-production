@@ -4,6 +4,7 @@ import {
   amenityGroups,
   amenityHighlights,
   assets,
+  blockPlans,
   facts,
   heroSlides,
   milestones,
@@ -188,7 +189,7 @@ function Home() {
   useEffect(() => {
     const timer = window.setInterval(() => {
       setSlideIndex((current) => (current + 1) % heroSlides.length);
-    }, 4200);
+    }, 5200);
     return () => window.clearInterval(timer);
   }, []);
 
@@ -240,6 +241,31 @@ function Home() {
         </div>
       </section>
 
+      <section className="block pearl">
+        <div className="container">
+          <div className="section-head">
+            <div>
+              <SectionLabel>Visual Showcase</SectionLabel>
+              <h2 className="section-title display">A cinematic glimpse of your signature address.</h2>
+            </div>
+            <p className="copy-lg">From arrival to landscaped experiences, every frame is designed to feel calm, green and quietly premium.</p>
+          </div>
+          <div className="visual-grid">
+            {visualShowcase.map(([title, tag, image]) => <VisualCard key={title} title={title} tag={tag} image={image} />)}
+          </div>
+        </div>
+      </section>
+
+      <section className="block navy">
+        <div className="container">
+          <SectionLabel light>Why Trivik</SectionLabel>
+          <h2 className="section-title display">Designed for comfort, confidence and long-term value.</h2>
+          <div className="why-grid">
+            {whyUs.map((item) => <WhyCard key={item.title} item={item} />)}
+          </div>
+        </div>
+      </section>
+
       <section className="block white">
         <div className="container">
           <SectionLabel>Nature & Luxury</SectionLabel>
@@ -260,31 +286,6 @@ function Home() {
                 <p>A composed residential environment created for families who value calm, comfort and long-term pride of ownership.</p>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="block navy">
-        <div className="container">
-          <SectionLabel light>Why Trivik</SectionLabel>
-          <h2 className="section-title display">Designed for comfort, confidence and long-term value.</h2>
-          <div className="why-grid">
-            {whyUs.map((item) => <WhyCard key={item.title} item={item} />)}
-          </div>
-        </div>
-      </section>
-
-      <section className="block pearl">
-        <div className="container">
-          <div className="section-head">
-            <div>
-              <SectionLabel>Visual Showcase</SectionLabel>
-              <h2 className="section-title display">A cinematic glimpse of your signature address.</h2>
-            </div>
-            <p className="copy-lg">From arrival to landscaped experiences, every frame is designed to feel calm, green and quietly premium.</p>
-          </div>
-          <div className="visual-grid">
-            {visualShowcase.map(([title, tag, image]) => <VisualCard key={title} title={title} tag={tag} image={image} />)}
           </div>
         </div>
       </section>
@@ -429,7 +430,9 @@ function About() {
 
 function Residences() {
   const [active, setActive] = useState(0);
+  const [blockPlanIndex, setBlockPlanIndex] = useState(0);
   const residence = residences[active];
+  const selectedBlockPlan = blockPlans[blockPlanIndex];
   return (
     <>
       <PageHero eyebrow="Residences" title="Premium apartments and duplex homes planned for" italic="modern family life" copy="Every residence has been designed with smart space planning, natural ventilation and an uncompromising eye for detail." image={assets.full} />
@@ -443,6 +446,39 @@ function Residences() {
           <SectionLabel>Official Plan Reference</SectionLabel>
           <h2 className="section-title display">Typical floor and duplex level plans.</h2>
           <div className="floor-plan-real reveal"><img src={assets.floorPlans} alt="Trivik Signature floor plans" loading="lazy" /></div>
+        </div>
+      </section>
+
+      <section className="block pearl">
+        <div className="container">
+          <div className="section-head">
+            <div>
+              <SectionLabel>Block Plans</SectionLabel>
+              <h2 className="section-title display">Choose the plan view you want to explore.</h2>
+            </div>
+            <p className="copy-lg">Select between the normal 3 BHK block plan and the duplex levels for a clearer understanding of the residence planning.</p>
+          </div>
+          <div className="tabs block-plan-tabs">
+            {blockPlans.map((item, index) => (
+              <button
+                key={item.title}
+                className={`tab ${blockPlanIndex === index ? "active" : ""}`}
+                onClick={() => setBlockPlanIndex(index)}
+              >
+                {item.title}
+              </button>
+            ))}
+          </div>
+          <div className="block-plan-viewer reveal">
+            <div className="block-plan-copy">
+              <SectionLabel>{selectedBlockPlan.label}</SectionLabel>
+              <h3 className="display">{selectedBlockPlan.title}</h3>
+              <p>{selectedBlockPlan.copy}</p>
+            </div>
+            <div className="block-plan-image">
+              <img src={selectedBlockPlan.image} alt={selectedBlockPlan.title} loading="lazy" />
+            </div>
+          </div>
         </div>
       </section>
       <section className="block pearl">
