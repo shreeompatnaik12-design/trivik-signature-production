@@ -988,3 +988,30 @@ body {
     font-size: 14px;
   }
 }
+
+
+/* v13 logo refinement: transparent logo, neater size */
+.brand {
+  background: transparent !important;
+}
+.brand img {
+  width: 250px;
+  height: auto;
+  object-fit: contain;
+  background: transparent !important;
+  border: 0;
+  box-shadow: none;
+}
+.site-header .brand img {
+  filter: none;
+}
+@media (max-width: 1100px) {
+  .brand img {
+    width: 225px;
+  }
+}
+@media (max-width: 700px) {
+  .brand img {
+    width: 185px;
+  }
+}
