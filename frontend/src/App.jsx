@@ -829,11 +829,14 @@ function App() {
     let fallbackTimer;
 
     const setupRevealAnimations = () => {
-      const nodes = document.querySelectorAll(".reveal, .block, .portal-card, .fact, .offer-card, .lead-form");
+      const nodes = document.querySelectorAll(
+        ".page-hero, .block, .reveal, .visual-card, .why-card, .amenity-tile, .milestone, .mini-card, .fact, .offer-card, .lead-form, .portal-card, .doc-card, .floor-card, .detail-panel, .block-plan-viewer, .contact-card, .subtle-card, .rera-card"
+      );
 
-      nodes.forEach((node) => {
+      nodes.forEach((node, index) => {
+        node.style.setProperty("--reveal-delay", `${Math.min(index * 28, 260)}ms`);
         const rect = node.getBoundingClientRect();
-        if (rect.top < window.innerHeight * 0.95) node.classList.add("is-visible");
+        if (rect.top < window.innerHeight * 0.92) node.classList.add("is-visible");
       });
 
       if (!("IntersectionObserver" in window)) {
@@ -848,7 +851,7 @@ function App() {
             observer.unobserve(entry.target);
           }
         });
-      }, { threshold: 0.06, rootMargin: "0px 0px -2% 0px" });
+      }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
 
       nodes.forEach((node) => observer.observe(node));
 
@@ -870,17 +873,19 @@ function App() {
     <>
       <ScrollToTop />
       <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/residences" element={<Residences />} />
-        <Route path="/amenities" element={<Amenities />} />
-        <Route path="/offers" element={<Offers />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/customer-login" element={<CustomerLogin />} />
-        <Route path="/customer-dashboard" element={<CustomerDashboard />} />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
+      <main key={pathname} className="page-shell route-transition">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/residences" element={<Residences />} />
+          <Route path="/amenities" element={<Amenities />} />
+          <Route path="/offers" element={<Offers />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/customer-login" element={<CustomerLogin />} />
+          <Route path="/customer-dashboard" element={<CustomerDashboard />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </main>
       <Footer />
       <FloatingContactRail />
       <StickyCTA />
