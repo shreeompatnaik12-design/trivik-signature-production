@@ -874,3 +874,117 @@ body {
     display: grid;
   }
 }
+
+
+/* v12 refinements: direct Whitefield logo + smaller cinematic hero cards */
+.brand {
+  gap: 0;
+}
+.brand img {
+  width: 300px;
+  height: auto;
+  object-fit: contain;
+}
+.brand span {
+  display: none !important;
+}
+
+.hero-corners {
+  padding: 116px 0 72px;
+  gap: 20px;
+}
+.hero-corner-left {
+  max-width: 500px;
+  padding: 18px 22px 20px;
+  border-radius: 24px;
+}
+.hero-corner-right {
+  max-width: 390px;
+  padding: 18px 20px 20px;
+  border-radius: 24px;
+}
+.hero-corner h1 {
+  font-size: clamp(42px, 5.8vw, 76px);
+  line-height: .9;
+  margin: 18px 0 0;
+}
+.hero-corner-right h2 {
+  font-size: clamp(38px, 4.6vw, 60px);
+  line-height: .9;
+  margin: 8px 0 10px;
+}
+.hero-corner-right p {
+  font-size: 15px;
+  line-height: 1.65;
+}
+.hero-corner .eyebrow {
+  padding: 8px 13px;
+  font-size: 9px;
+  letter-spacing: .22em;
+}
+.hero-corner .hero-actions {
+  margin-top: 24px;
+  gap: 12px;
+}
+.hero-corner .btn {
+  padding: 12px 20px;
+  font-size: 13px;
+}
+.hero-corner-right .tiny-title {
+  font-size: 9px;
+  letter-spacing: .26em;
+}
+
+@media (max-width: 1100px) {
+  .brand img {
+    width: 250px;
+  }
+  .hero-corners {
+    grid-template-columns: .95fr .75fr;
+  }
+  .hero-corner-left {
+    max-width: 455px;
+  }
+  .hero-corner-right {
+    max-width: 355px;
+  }
+  .hero-corner h1 {
+    font-size: clamp(40px, 6vw, 66px);
+  }
+  .hero-corner-right h2 {
+    font-size: clamp(34px, 5vw, 52px);
+  }
+}
+@media (max-width: 900px) {
+  .hero-corners {
+    grid-template-columns: 1fr;
+    align-items: end;
+  }
+  .hero-corner-left,
+  .hero-corner-right {
+    max-width: 520px;
+  }
+}
+@media (max-width: 700px) {
+  .brand img {
+    width: 210px;
+  }
+  .hero-corners {
+    min-height: 88vh;
+    padding: 96px 0 82px;
+  }
+  .hero-corner-left,
+  .hero-corner-right {
+    padding: 16px;
+    border-radius: 20px;
+  }
+  .hero-corner h1 {
+    font-size: clamp(38px, 12vw, 50px);
+  }
+  .hero-corner-right h2 {
+    font-size: 38px;
+  }
+  .hero-corner-right p {
+    font-size: 14px;
+  }
+}
