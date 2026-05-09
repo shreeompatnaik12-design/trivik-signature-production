@@ -1015,3 +1015,167 @@ body {
     width: 185px;
   }
 }
+
+
+/* v14: premium page transitions and richer scroll reveals */
+.page-shell {
+  position: relative;
+  overflow-x: hidden;
+}
+.route-transition {
+  animation: routeReveal .72s cubic-bezier(.16, 1, .3, 1) both;
+  transform-origin: 50% 0%;
+}
+.route-transition::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 18% 22%, rgba(207,168,86,.18), transparent 30%),
+    linear-gradient(135deg, rgba(15,53,105,.18), rgba(255,253,248,0));
+  opacity: 0;
+  animation: routeLightSweep .82s cubic-bezier(.16, 1, .3, 1) both;
+}
+@keyframes routeReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(18px) scale(.992);
+    filter: blur(8px);
+  }
+  58% {
+    opacity: 1;
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+@keyframes routeLightSweep {
+  0% {
+    opacity: .85;
+    transform: translateY(-18px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+/* More revealing page-scroll animation */
+.page-shell .page-hero,
+.page-shell .block,
+.page-shell .reveal,
+.page-shell .visual-card,
+.page-shell .why-card,
+.page-shell .amenity-tile,
+.page-shell .milestone,
+.page-shell .mini-card,
+.page-shell .fact,
+.page-shell .offer-card,
+.page-shell .lead-form,
+.page-shell .portal-card,
+.page-shell .doc-card,
+.page-shell .floor-card,
+.page-shell .detail-panel,
+.page-shell .block-plan-viewer,
+.page-shell .contact-card,
+.page-shell .subtle-card,
+.page-shell .rera-card {
+  opacity: 0;
+  transform: translateY(42px);
+  filter: blur(8px);
+  transition:
+    opacity .82s cubic-bezier(.16, 1, .3, 1) var(--reveal-delay, 0ms),
+    transform .82s cubic-bezier(.16, 1, .3, 1) var(--reveal-delay, 0ms),
+    filter .82s cubic-bezier(.16, 1, .3, 1) var(--reveal-delay, 0ms);
+  will-change: opacity, transform, filter;
+}
+.page-shell .page-hero.is-visible,
+.page-shell .block.is-visible,
+.page-shell .reveal.is-visible,
+.page-shell .visual-card.is-visible,
+.page-shell .why-card.is-visible,
+.page-shell .amenity-tile.is-visible,
+.page-shell .milestone.is-visible,
+.page-shell .mini-card.is-visible,
+.page-shell .fact.is-visible,
+.page-shell .offer-card.is-visible,
+.page-shell .lead-form.is-visible,
+.page-shell .portal-card.is-visible,
+.page-shell .doc-card.is-visible,
+.page-shell .floor-card.is-visible,
+.page-shell .detail-panel.is-visible,
+.page-shell .block-plan-viewer.is-visible,
+.page-shell .contact-card.is-visible,
+.page-shell .subtle-card.is-visible,
+.page-shell .rera-card.is-visible {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* Child cards reveal with a slight premium lift */
+.visual-card.is-visible,
+.why-card.is-visible,
+.amenity-tile.is-visible,
+.fact.is-visible,
+.offer-card.is-visible,
+.mini-card.is-visible {
+  transition-duration: .9s;
+}
+
+/* Hero content gets a calmer entrance after each route load */
+.cinematic-hero .hero-corner-left {
+  animation: heroTextIn .95s cubic-bezier(.16, 1, .3, 1) .16s both;
+}
+.cinematic-hero .hero-corner-right {
+  animation: heroTextIn .95s cubic-bezier(.16, 1, .3, 1) .28s both;
+}
+@keyframes heroTextIn {
+  0% {
+    opacity: 0;
+    transform: translateY(26px);
+    filter: blur(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-transition,
+  .route-transition::before,
+  .cinematic-hero .hero-corner-left,
+  .cinematic-hero .hero-corner-right,
+  .page-shell .page-hero,
+  .page-shell .block,
+  .page-shell .reveal,
+  .page-shell .visual-card,
+  .page-shell .why-card,
+  .page-shell .amenity-tile,
+  .page-shell .milestone,
+  .page-shell .mini-card,
+  .page-shell .fact,
+  .page-shell .offer-card,
+  .page-shell .lead-form,
+  .page-shell .portal-card,
+  .page-shell .doc-card,
+  .page-shell .floor-card,
+  .page-shell .detail-panel,
+  .page-shell .block-plan-viewer,
+  .page-shell .contact-card,
+  .page-shell .subtle-card,
+  .page-shell .rera-card {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+}
